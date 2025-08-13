@@ -10,8 +10,8 @@ cd ..
 echo "📁 Creating build directory..."
 mkdir -p build/windows
 echo "📦 Creating SoundMaker.exe..."
-cat tools/love-win32/love.exe SoundMaker.love > build/windows/SoundMaker.exe
+cat tools/love-11.5-win32/love.exe SoundMaker.love > build/windows/SoundMaker.exe
 echo "📄 Copying DLLs and license..."
-cp tools/love-win32/*.dll build/windows/
-cp tools/love-win32/license.txt build/windows/
+cp tools/love-11.5-win32/*.dll build/windows/
+cp tools/love-11.5-win32/license.txt build/windows/
 echo "✅ Build completed! Output: build/windows/SoundMaker.exe"

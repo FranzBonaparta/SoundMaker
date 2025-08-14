@@ -1,6 +1,6 @@
 -- Configuration function of Love2D
 function love.conf(w)
-    w.title = ""
+    w.title = "SoundMaker"
     w.window.height = 800
     w.window.width = 1500
     w.version = "11.4"

@@ -1,6 +1,8 @@
 local Object = require("libs.classic")
 local PianoViewer = Object:extend()
 local PianoKey = require("pianoKey")
+local SoundMaker = require("SoundMaker")
+local soundMaker = SoundMaker()
 local width, whiteHeight, blackHeight = 25, 100, 50
 local whiteNotes = {
   "A0", "B0",
@@ -28,6 +30,8 @@ function PianoViewer:new(x, y)
   self.y = y
   self.whiteTouches = {}
   self.blackTouches = {}
+  self.partition = {}
+  self.partitionText = ""
 
   for w = 1, 52 do
     local whiteKey = PianoKey("white", x, y, width, whiteHeight)
@@ -69,6 +73,17 @@ end
 function PianoViewer:draw()
   drawWhiteTouches(self)
   drawBlackTouches(self)
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.printf(self.partitionText, self.x, 400, 1200)
+end
+
+function PianoViewer:updatePartition(value, duration)
+  table.insert(self.partition, { note = value.note, duration = duration })
+  self.partitionText = self.partitionText .. value.name .. ", "
+end
+
+function PianoViewer:playPartition(simpleMusicPlayer)
+  simpleMusicPlayer:playMelody(self.partition, function(f, d, a) return soundMaker:createSineWave(f, d, a) end)
 end
 
 function PianoViewer:mousepressed(mx, my, button)
@@ -77,12 +92,15 @@ function PianoViewer:mousepressed(mx, my, button)
   if button == 1 or button == 2 or button == 3 then
     for _, value in ipairs(self.blackTouches) do
       if value:mouseIsHover(mx, my) then
+        self:updatePartition(value, duration)
         value:play(duration)
+        print(value.note)
         return
       end
     end
     for _, value in ipairs(self.whiteTouches) do
       if value:mouseIsHover(mx, my) then
+        self:updatePartition(value, duration)
         value:play(duration)
         return
       end

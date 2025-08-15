@@ -74,7 +74,7 @@ function PianoViewer:draw()
   drawWhiteTouches(self)
   drawBlackTouches(self)
   love.graphics.setColor(1, 1, 1)
-  love.graphics.printf(self.partitionText, self.x, 400, 1200)
+  love.graphics.printf(self.partitionText, self.x, 500, 1200)
 end
 
 function PianoViewer:updatePartition(value, duration)
@@ -97,13 +97,17 @@ function PianoViewer:mousepressed(mx, my, button)
         print(value.note)
         return
       end
+      value:mousepressed(mx,my,button)
     end
     for _, value in ipairs(self.whiteTouches) do
       if value:mouseIsHover(mx, my) then
         self:updatePartition(value, duration)
         value:play(duration)
+                print(value.note)
+
         return
       end
+      value:mousepressed(mx,my,button)
     end
   end
 end

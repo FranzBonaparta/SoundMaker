@@ -53,7 +53,25 @@ function SoundMaker:createSineWave(frequency, duration, amplitude)
     end
     return love.audio.newSource(soundData)
 end
-
+-- Génère un son doux avec enveloppe de type flûte
+function SoundMaker:generateFluteNote(frequency, duration, amplitude)
+     amplitude = amplitude or 0.3
+    local soundData = love.sound.newSoundData(self.sampleRate * duration, self.sampleRate, 16, 1)
+    for i = 0, soundData:getSampleCount() - 1 do
+        local t = i / self.sampleRate
+        local env = math.exp(-3 * t) * (1 - math.exp(-15 * t)) -- Attaque/déclin
+        local value =
+            amplitude * env * (
+        math.sin(2 * math.pi * frequency * t) +              -- fondamentale
+        0.3 * math.sin(2 * math.pi * frequency * 20 * t) +   -- harmonique aiguë
+        0.1 * math.sin(2 * math.pi * frequency * 3 * t)      -- harmonique médium/aiguë
+            )
+        soundData:setSample(i, value)
+    end
+    local src = love.audio.newSource(soundData)
+    src:setLooping(false)
+    return src
+end
 -- Onde carrée
 function SoundMaker:createSquareWave(frequency, duration, amplitude)
     amplitude = amplitude or 0.3

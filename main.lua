@@ -7,6 +7,7 @@ local FrequencySweep = require("FrequencySweep")
 
 -- Function called only once at the beginning
 function love.load()
+
     -- Initialization of resources (images, sounds, variables)
     player:playIntro()
 
@@ -32,7 +33,6 @@ end
 function love.mousepressed(mx, my, button)
     piano:mousepressed(mx, my, button)
 end
-
 -- Function called at each touch
 function love.keypressed(key)
     -- Example: exit the game with Escape
@@ -46,5 +46,10 @@ function love.keypressed(key)
     if key == "tab" and #piano.partition > 0 then
         piano:playPartition(player)
     end
+    if key=="backspace" then
+        piano.partition={}
+        piano.partitionText=""
+    end
+
     player:keypressed(key)
 end

@@ -2,6 +2,7 @@ local Object = require("libs.classic")
 local PianoKey = Object:extend()
 local SoundMaker = require("SoundMaker")
 local soundMaker = SoundMaker()
+local FrequencySlider=require("frequencySlider")
 local index = 1
 
 function PianoKey:new(type, x, y, width, height, bool)
@@ -15,6 +16,8 @@ function PianoKey:new(type, x, y, width, height, bool)
   self.index = 0
   self.name = ""
   self.touchTimer = 0
+  self.frequencySlider=nil
+
   if self.type == "white" then
     self.index = index
     index = index + 1
@@ -39,13 +42,15 @@ end
 function PianoKey:updateWidth()
   self.width = self.width * 0.6
 end
-
+--set frequency name, note & setter
 function PianoKey:setName(name)
   self.name = name
   if self.type == "white" then
     self:setNote(soundMaker.WhiteNotes[self.name])
+    self.frequencySlider=FrequencySlider(self.x+10,self.y+self.height+100,4,100,self.note)
   elseif self.type == "black" then
     self:setNote(soundMaker.BlackNotes[self.name])
+     self.frequencySlider=FrequencySlider(self.x+5,self.y+self.height+100,4,100,self.note)
   end
 end
 
@@ -92,12 +97,19 @@ function PianoKey:draw()
     love.graphics.setColor(1, 1, 1)
     love.graphics.print(self.name, self.x + 1, self.y - 20)
   end
+  if self.frequencySlider then
+    self.frequencySlider:draw()
+  end
 end
-
+function PianoKey:mousepressed(mx,my,button)
+  self.frequencySlider:mousepressed(mx,my,button)
+end
 function PianoKey:update(dt)
   if self.touchTimer > 0 then
     self.touchTimer = math.max(self.touchTimer - dt, 0)
   end
+  self.frequencySlider:update(dt)
+  self.note=self.note~=self.frequencySlider.modifiedNote and self.frequencySlider.modifiedNote or self.note
 end
 
 return PianoKey

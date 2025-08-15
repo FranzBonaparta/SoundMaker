@@ -47,10 +47,10 @@ function PianoKey:setName(name)
   self.name = name
   if self.type == "white" then
     self:setNote(soundMaker.WhiteNotes[self.name])
-    self.frequencySlider=FrequencySlider(self.x+10,self.y+self.height+100,4,100,self.note)
+    self.frequencySlider=FrequencySlider(self.x+10,self.y+self.height+100,4,100,self.note, self.name)
   elseif self.type == "black" then
     self:setNote(soundMaker.BlackNotes[self.name])
-     self.frequencySlider=FrequencySlider(self.x+5,self.y+self.height+100,4,100,self.note)
+     self.frequencySlider=FrequencySlider(self.x+5,self.y+self.height+100,4,100,self.note, self.name)
   end
 end
 

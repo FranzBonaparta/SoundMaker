@@ -2,7 +2,7 @@ local Object = require("libs.classic")
 
 local FrequencySlider = Object:extend()
 
-function FrequencySlider:new(x, y, width, height, note)
+function FrequencySlider:new(x, y, width, height, note, name)
     self.x = x
     self.y = y
     self.width = width
@@ -13,6 +13,7 @@ function FrequencySlider:new(x, y, width, height, note)
     self.dragging = false
     self.onChange = nil
     self.cursorState = "arrow"
+    self.name=name
     self.note = note
     self.modifiedNote = self.note
     self.isModified=false
@@ -49,7 +50,7 @@ function FrequencySlider:draw()
     love.graphics.setColor(1, 1, 1)
     if self:mouseIsHover(love.mouse.getX(), love.mouse.getY()) then
         local freq = math.floor(self.note * (self.value + 50) / 100)
-        love.graphics.print(freq .. " Hz", self.x - 10, 225)
+        love.graphics.print(self.name.."\n"..freq .. " Hz", self.x - 10, 220)
     end
     love.graphics.print(self.value, self.x - 5, self.y + self.height + 10)
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)

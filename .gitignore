@@ -1,4 +1,2 @@
 .vscode/
 SoundMaker.love
-build/windows/*
-build/windows/SoundMaker.exe

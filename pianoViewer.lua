@@ -31,7 +31,7 @@ function PianoViewer:new(x, y)
   self.whiteTouches = {}
   self.blackTouches = {}
   self.partition = {}
-  self.partitionText = ""
+  self.partitionText = "Partition jouée:\n"
 
   for w = 1, 52 do
     local whiteKey = PianoKey("white", x, y, width, whiteHeight)

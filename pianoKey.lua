@@ -104,6 +104,9 @@ end
 function PianoKey:mousepressed(mx,my,button)
   self.frequencySlider:mousepressed(mx,my,button)
 end
+function PianoKey:mousereleased(mx,my,button)
+  self.frequencySlider:mousereleased(mx,my,button)
+end
 function PianoKey:update(dt)
   if self.touchTimer > 0 then
     self.touchTimer = math.max(self.touchTimer - dt, 0)

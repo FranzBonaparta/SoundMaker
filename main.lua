@@ -33,6 +33,9 @@ end
 function love.mousepressed(mx, my, button)
     piano:mousepressed(mx, my, button)
 end
+function love.mousereleased(mx, my, button)
+    piano:mousereleased(mx, my, button)
+end
 -- Function called at each touch
 function love.keypressed(key)
     -- Example: exit the game with Escape

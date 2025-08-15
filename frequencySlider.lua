@@ -2,7 +2,7 @@ local Object = require("libs.classic")
 
 local FrequencySlider = Object:extend()
 
-function FrequencySlider:new(x, y, width, height,note)
+function FrequencySlider:new(x, y, width, height, note)
     self.x = x
     self.y = y
     self.width = width
@@ -13,8 +13,9 @@ function FrequencySlider:new(x, y, width, height,note)
     self.dragging = false
     self.onChange = nil
     self.cursorState = "arrow"
-    self.note=note
-    self.modifiedNote=self.note
+    self.note = note
+    self.modifiedNote = self.note
+    self.isModified=false
 end
 
 function FrequencySlider:setOnChange(f)
@@ -30,6 +31,7 @@ function FrequencySlider:setValue(value)
     if self.onChange and oldValue ~= value then
         self.onChange(value)
     end
+    self.isModified=true
 end
 
 function FrequencySlider:draw()
@@ -44,12 +46,12 @@ function FrequencySlider:draw()
         y = self.y + self.height * yRatio
         x = self.x + self.width / 2
     end
-    love.graphics.setColor(1,1,1)
+    love.graphics.setColor(1, 1, 1)
     if self:mouseIsHover(love.mouse.getX(), love.mouse.getY()) then
-  local freq = math.floor(self.note * (self.value + 50) / 100)
-  love.graphics.print(freq .. " Hz", self.x - 10, 225)
-end
-    love.graphics.print(self.value,self.x-5,self.y+self.height+10)
+        local freq = math.floor(self.note * (self.value + 50) / 100)
+        love.graphics.print(freq .. " Hz", self.x - 10, 225)
+    end
+    love.graphics.print(self.value, self.x - 5, self.y + self.height + 10)
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
     love.graphics.setColor(0.25, 0.25, 0.25)
     love.graphics.circle("fill", x, y, 5, 30)
@@ -57,13 +59,14 @@ end
 end
 
 function FrequencySlider:mousepressed(mx, my, button)
-    if button ~= 1 and button ~=2 then return end
-    if button==2 and self:mouseIsHover(mx,my) then
-        self.modifiedNote=self.note
-        self.value=(self.modifiedNote*100/self.note)-50
+    if button ~= 1 and button ~= 2 then return end
+    -- reset the note to initial value
+    if button == 2 and self:mouseIsHover(mx, my) then
+        self.modifiedNote = self.note
+        self:setValue((self.modifiedNote * 100 / self.note) - 50)
         return
     end
-    
+
     local buttonRadius = 3
     --horizontal
     if self.width >= self.height then
@@ -112,40 +115,38 @@ function FrequencySlider:mousemoved(mx, my, dx, dy)
     pos = math.max(0, math.min(1, pos))
 
     self:setValue(self.min + (self.max - self.min) * pos)
-    self.modifiedNote=self.note*(self.value+50)/100
+    --self.modifiedNote = self.note * (self.value + 50) / 100
 end
 
 function FrequencySlider:mousereleased(mx, my, button)
-    if button == 1 then
+    if button == 1 and self.isModified then
         self.dragging = false
+        self.modifiedNote = self.note * (self.value + 50) / 100
+        self.isModified=false
     end
 end
+
 function FrequencySlider:mouseIsHover(mx, my)
-  local isHover = false
-  if mx >= self.x and mx <= self.x + self.width and
-      my >= self.y and my <= self.y + self.height then
-    isHover = true
-  end
-  return isHover
+    local isHover = false
+    if mx >= self.x and mx <= self.x + self.width and
+        my >= self.y and my <= self.y + self.height then
+        isHover = true
+    end
+    return isHover
 end
 
 function FrequencySlider:update(dt)
-    local mx,my=love.mouse.getPosition()
-    if self:mouseIsHover(mx,my) then
-        self.dragging=true
-    else
-        self.dragging=false
-    end
-    local newCursor = self.dragging and "hand" or "arrow"
+    local mx, my = love.mouse.getPosition()
+    local isHovering=self:mouseIsHover(mx, my)
+
+    local newCursor = isHovering and "hand" or "arrow"
     if self.cursorState ~= newCursor then
         love.mouse.setCursor(love.mouse.getSystemCursor(newCursor))
         self.cursorState = newCursor
     end
     if love.mouse.isDown(1) and self.dragging then
-        self:mousemoved(mx,my,2,2)  
-
-          end
-
+        self:mousemoved(mx, my, 2, 2)
+    end
 end
 
 return FrequencySlider

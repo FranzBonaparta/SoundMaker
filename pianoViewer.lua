@@ -111,7 +111,14 @@ function PianoViewer:mousepressed(mx, my, button)
     end
   end
 end
-
+function PianoViewer:mousereleased(mx,my,button)
+    for _, value in ipairs(self.blackTouches) do
+    value:mousereleased(mx,my,button)
+  end
+  for _, value in ipairs(self.whiteTouches) do
+    value:mousereleased(mx,my,button)
+  end
+end
 function PianoViewer:update(dt)
   for _, value in ipairs(self.blackTouches) do
     value:update(dt)

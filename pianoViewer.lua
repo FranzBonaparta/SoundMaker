@@ -4,27 +4,9 @@ local PianoKey = require("pianoKey")
 local SoundMaker = require("SoundMaker")
 local soundMaker = SoundMaker()
 local width, whiteHeight, blackHeight = 25, 100, 50
-local whiteNotes = {
-  "A0", "B0",
-  "C1", "D1", "E1", "F1", "G1", "A1", "B1",
-  "C2", "D2", "E2", "F2", "G2", "A2", "B2",
-  "C3", "D3", "E3", "F3", "G3", "A3", "B3",
-  "C4", "D4", "E4", "F4", "G4", "A4", "B4",
-  "C5", "D5", "E5", "F5", "G5", "A5", "B5",
-  "C6", "D6", "E6", "F6", "G6", "A6", "B6",
-  "C7", "D7", "E7", "F7", "G7", "A7", "B7",
-  "C8"
-}
-local blackNotes = {
-  "As0",
-  "Cs1", "Ds1", "Fs1", "Gs1", "As1",
-  "Cs2", "Ds2", "Fs2", "Gs2", "As2",
-  "Cs3", "Ds3", "Fs3", "Gs3", "As3",
-  "Cs4", "Ds4", "Fs4", "Gs4", "As4",
-  "Cs5", "Ds5", "Fs5", "Gs5", "As5",
-  "Cs6", "Ds6", "Fs6", "Gs6", "As6",
-  "Cs7", "Ds7", "Fs7", "Gs7", "As7"
-}
+local Notes=require("notes")
+local whiteNotes = Notes.whiteNotesName
+local blackNotes = Notes.blackNotesName
 function PianoViewer:new(x, y)
   self.x = x
   self.y = y

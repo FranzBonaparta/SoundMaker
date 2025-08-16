@@ -1,8 +1,8 @@
 local Object = require("libs.classic")
 local PianoKey = Object:extend()
-local SoundMaker = require("SoundMaker")
+local SoundMaker = require("engine.SoundMaker")
 local soundMaker = SoundMaker()
-local FrequencySlider=require("frequencySlider")
+local FrequencySlider=require("UI.frequencySlider")
 local index = 1
 
 function PianoKey:new(type, x, y, width, height, bool)

@@ -1,10 +1,10 @@
 local Object = require("libs.classic")
 local PianoViewer = Object:extend()
-local PianoKey = require("pianoKey")
-local SoundMaker = require("SoundMaker")
+local PianoKey = require("UI.pianoKey")
+local SoundMaker = require("engine.SoundMaker")
 local soundMaker = SoundMaker()
 local width, whiteHeight, blackHeight = 25, 100, 50
-local Notes=require("notes")
+local Notes=require("assets.notes")
 local whiteNotes = Notes.whiteNotesName
 local blackNotes = Notes.blackNotesName
 function PianoViewer:new(x, y)

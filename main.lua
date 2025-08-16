@@ -1,9 +1,9 @@
 -- main.lua - entry point of your Love2D project
-local SimpleMusicPlayer = require("simpleMusicPlayer")
+local SimpleMusicPlayer = require("engine.simpleMusicPlayer")
 local player = SimpleMusicPlayer()
-local PianoViewer = require("pianoViewer")
+local PianoViewer = require("UI.pianoViewer")
 local piano = PianoViewer(50, 100)
-local FrequencySweep = require("FrequencySweep")
+local FrequencySweep = require("engine.FrequencySweep")
 
 -- Function called only once at the beginning
 function love.load()

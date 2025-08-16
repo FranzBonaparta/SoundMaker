@@ -1,5 +1,5 @@
 local Object = require("libs.classic")
-local SoundMaker = require("SoundMaker")
+local SoundMaker = require("engine.SoundMaker")
 local soundMaker = SoundMaker()
 local SimpleMusicPlayer = Object:extend()
 local fluteSources = {}

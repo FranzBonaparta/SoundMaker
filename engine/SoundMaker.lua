@@ -1,6 +1,6 @@
 local Object = require("libs.classic")
 local SoundMaker = Object:extend()
-local Notes=require("notes")
+local Notes=require("assets.notes")
 function SoundMaker:new()
     self.sampleRate = 44100 -- Standard audio
     self.Notes = Notes.global

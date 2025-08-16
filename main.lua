@@ -51,7 +51,7 @@ function love.keypressed(key)
     end
     if key=="backspace" then
         piano.partition={}
-        piano.partitionText=""
+        piano.partitionText="Partition jouée\n"
     end
 
     player:keypressed(key)

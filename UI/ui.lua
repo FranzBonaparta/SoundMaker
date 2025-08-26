@@ -7,6 +7,8 @@ function UI:new()
   self.piano=PianoViewer(50,100)
   self.attack=Knob(1430,100,20,"attack")
   self.decay=Knob(1430,180,20,"decay")
+  self.attack:setLimits(-20,-1)
+  self.decay:setLimits(-20,-1)
 end
 
 function UI:update(dt)
@@ -23,6 +25,8 @@ end
 
 function UI:mousepressed(mx,my,button)
   self.piano:mousepressed(mx,my,button)
+  self.attack:mousepressed(mx,my,button)
+  self.decay:mousepressed(mx,my,button)
 end
 
 function UI:mousereleased(mx,my,button)

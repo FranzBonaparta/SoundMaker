@@ -59,7 +59,7 @@ function PianoKey:setNote(note)
 end
 
 function PianoKey:play(duration)
-  soundMaker:createSineWave(self.note, duration):play()
+  soundMaker:generateFluteNote(self.note, duration):play()
   self.touchTimer = duration
 end
 

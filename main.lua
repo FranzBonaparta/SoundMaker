@@ -24,7 +24,6 @@ end
 function love.draw()
     -- Everything that needs to be displayed passes here
     love.graphics.setColor(1, 1, 1) -- blanc
-    love.graphics.print("Hello Love2D!", 100, 100)
     ui:draw()
 end
 

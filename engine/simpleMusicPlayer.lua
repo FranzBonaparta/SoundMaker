@@ -91,6 +91,7 @@ function SimpleMusicPlayer:keypressed(key)
         elseif key == "e" then fluteSources.E4:play() 
         elseif key == "r" then fluteSources.F4:play() 
         elseif key == "t" then fluteSources.G4:play() 
+        elseif key=="y" then soundMaker:generateFluteNote(notes.E4,0.5):play()
     end
 end
 

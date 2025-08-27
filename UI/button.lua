@@ -2,9 +2,10 @@ local Object = require("libs.classic")
 
 local Button = Object:extend()
 local defaultFont = love.graphics.newFont(14)
-local Tooltip=require("tooltip")
+local Tooltip=require("UI.tooltip")
 
 function Button:new(x, y, width, height, text, f, angle)
+    self.index=nil
     self.x = x
     self.y = y
     self.width = width
@@ -20,6 +21,9 @@ function Button:new(x, y, width, height, text, f, angle)
     self.toRemove=false
     self.locked=false
     self.tooltip=nil
+end
+function Button:setIndex(index)
+    self.index=index
 end
 function Button:setText(text)
     self.text=text

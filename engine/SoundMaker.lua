@@ -48,8 +48,8 @@ function SoundMaker:getEnvelope(time, attack, decay)
 end
 function SoundMaker:getHarmonic(frequency, amplitude, time, envelope)
     local value = math.sin(2 * math.pi * frequency * time)
-    local harmonicfactors = { 2,3,4 }
-    local harmonicAmplitudes = { 0.5,0.3, 0.1 }
+    local harmonicfactors = { 1 } --multiples de la fq fondamentale >=1;<=[16;32]
+    local harmonicAmplitudes = { 1 } --coeff de volume sur chq harmonique: "poids" [0.0;1.0]
     for i, factor in ipairs(harmonicfactors) do
         local harmonicFreq = frequency * factor
         value = value + harmonicAmplitudes[i] * math.sin(2 * math.pi * harmonicFreq * time)

@@ -1,5 +1,5 @@
 local Object = require("libs.classic")
-local Button=require("button")
+local Button=require("UI.button")
 local Knob = Object:extend()
 
 function Knob:new(x, y, r, name)

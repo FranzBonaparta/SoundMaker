@@ -23,6 +23,7 @@ function UI:initializeStateButton()
     self.state = self.state == "piano" and "harmonic" or "piano"
     if self.state == "piano" then
       self.stateButton:setText("edit Harmonic")
+      
     else
       self.stateButton:setText("go to piano")
     end
@@ -45,6 +46,7 @@ function UI:setInstrumentsButtons()
         end
 
         self.instrumentIndex = instrument.index
+        self.harmonicEditor:initializeFields(self.instrumentIndex)
         print("instr index modified " .. self.instrumentIndex)
       end
     end)
@@ -100,6 +102,7 @@ end
 
 function UI:keypressed(key, player)
   if self.state == "piano" then
+     player:keypressed(key)
     if key == "tab" and #self.piano.partition > 0 then
       self.piano:playPartition(player)
     end
@@ -107,6 +110,8 @@ function UI:keypressed(key, player)
       self.piano.partition = {}
       self.piano.partitionText = "Partition jouée\n"
     end
+  elseif self.state=="harmonic" then
+    self.harmonicEditor:keypressed(key)
   end
 end
 

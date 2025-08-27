@@ -41,5 +41,5 @@ function love.keypressed(key)
     end
     ui:keypressed(key,player)
 
-    player:keypressed(key)
+    
 end

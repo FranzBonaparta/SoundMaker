@@ -17,6 +17,7 @@ function InputField:new(type)
     self.cursorVisible = true             -- Whether the cursor is currently visible
     self.placeholder = "Write here"
     self.cursorState = "arrow"
+    self.isValidated=false
 end
 function InputField:setCoords(x,y,width)
     self.x=x
@@ -127,6 +128,7 @@ function InputField:keypressed(key)
         end,
         ["return"] = function()
             self.focused = false -- Defocus on Enter
+            self.isValidated=true
         end,
         left = function()
             self.cursorPos = math.max(1, self.cursorPos - 1) -- Move cursor left
@@ -136,11 +138,13 @@ function InputField:keypressed(key)
         end,
         ["kpenter"] = function()
             self.focused = false -- Also defocus on keypad Enter
+            self.isValidated=true
+
         end,
     }
 
     local action = keyActions[key]
-    if action then action() elseif key:match("^kp%d$") then
+    if action and self.focused then action() elseif key:match("^kp%d$") then
         -- pavé numérique : convertir "kp1" → "1", etc.
         local digit = key:sub(3, 3)
         self:textinput(digit)

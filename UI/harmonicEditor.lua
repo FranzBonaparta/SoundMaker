@@ -114,8 +114,9 @@ function HarmonicEditor:addHarmonic()
       local amplitudeField = InputField("float")
       local factorField = InputField("float")
       local diffX, diffY = self.x + 90, self.y + 90
-      factorField:setCoords(self.x, diffY + (size * 20), 50)
-      amplitudeField:setCoords(diffX, diffY + (size * 20), 50)
+      local newIndex = size + 1
+      factorField:setCoords(self.x, diffY + (newIndex * 20), 50)
+      amplitudeField:setCoords(diffX, diffY + (newIndex * 20), 50)
 
 
       if self.shapes[self.indexChosen] == "square" then
@@ -128,8 +129,8 @@ function HarmonicEditor:addHarmonic()
         table.insert(tableFactors, lastFactor + 1)
         table.insert(tableAmplitude, (1 / (lastFactor + 1)) * ((-1) ^ lastFactor))
       end
-      factorField:setPlaceholder(tableFactors[size])
-      amplitudeField:setPlaceholder(string.format("%.3f", tableAmplitude[size]))
+      factorField:setPlaceholder(tableFactors[newIndex])
+      amplitudeField:setPlaceholder(string.format("%.3f", tableAmplitude[newIndex]))
 
       table.insert(self.amplitudesFields, amplitudeField)
       table.insert(self.factorsFields, factorField)
@@ -188,11 +189,22 @@ function HarmonicEditor:update(dt)
   if self.decayKnob.value ~= self.decays[self.indexChosen] then
     self.decays[self.indexChosen] = self.decayKnob.value
   end
-  for _, field in ipairs(self.factorsFields) do
+  for i, field in ipairs(self.factorsFields) do
     field:update(dt)
+    if field.isValidated and tonumber(field.text) then
+      self.factors[self.indexChosen][i]=tonumber(field.text)
+      print("factor "..i.." set to "..field.text)
+      field.isValidated=false
+
+    end
   end
-  for _, field in ipairs(self.amplitudesFields) do
+  for i, field in ipairs(self.amplitudesFields) do
     field:update(dt)
+    if field.isValidated and tonumber(field.text) then
+      self.amplitudes[self.indexChosen][i]=tonumber(field.text)
+      print("amplitude "..i.." set to "..field.text)
+      field.isValidated=false
+    end
   end
 end
 

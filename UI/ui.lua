@@ -53,6 +53,10 @@ function UI:setInstrumentsButtons()
     instrument:setBackgroundColor(125, 125, 125)
     self.instruments[i] = instrument
   end
+  --choose default 1 instrument
+  if self.instruments[1] then
+    self.instruments[1].onClick()
+  end
 end
 
 function UI:update(dt)

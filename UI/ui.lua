@@ -23,7 +23,6 @@ function UI:initializeStateButton()
     self.state = self.state == "piano" and "harmonic" or "piano"
     if self.state == "piano" then
       self.stateButton:setText("edit Harmonic")
-      
     else
       self.stateButton:setText("go to piano")
     end
@@ -46,12 +45,18 @@ function UI:setInstrumentsButtons()
         end
 
         self.instrumentIndex = instrument.index
+        self.harmonicEditor.indexChosen = instrument.index
+        
+        self.harmonicEditor.attackKnob.value = self.harmonicEditor.attacks[instrument.index]
+        self.harmonicEditor.decayKnob.value = self.harmonicEditor.decays[instrument.index]
         self.harmonicEditor:initializeFields(self.instrumentIndex)
+        self.harmonicEditor:initializeAddButtons()
+        self.harmonicEditor:initializeShapesButtons()
         print("instr index modified " .. self.instrumentIndex)
       end
     end)
     instrument:setBackgroundColor(125, 125, 125)
-    self.instruments[i] = instrument
+    table.insert(self.instruments,i, instrument)
   end
   --choose default 1 instrument
   if self.instruments[1] then
@@ -81,11 +86,12 @@ end
 
 function UI:mousepressed(mx, my, button)
   if self.state == "piano" then
-    local instrument=self.harmonicEditor
+    local instrument = self.harmonicEditor
     self.piano:mousepressed(mx, my, button, instrument)
     for _, instr in ipairs(self.instruments) do
-      instr:mousepressed(mx, my, button)
-      if button == 2 and instr:isHovered(mx, my) then
+      if button == 1 and instr:isHovered(mx, my) then
+        instr:mousepressed(mx, my, button)
+      elseif button == 2 and instr:isHovered(mx, my) then
         self.harmonicEditor.indexChosen = instr.index
         self.harmonicEditor.attackKnob.value = self.harmonicEditor.attacks[instr.index]
         self.harmonicEditor.decayKnob.value = self.harmonicEditor.decays[instr.index]
@@ -107,7 +113,7 @@ end
 
 function UI:keypressed(key, player)
   if self.state == "piano" then
-     player:keypressed(key)
+    player:keypressed(key)
     if key == "tab" and #self.piano.partition > 0 then
       self.piano:playPartition(player, self.harmonicEditor)
     end
@@ -115,7 +121,7 @@ function UI:keypressed(key, player)
       self.piano.partition = {}
       self.piano.partitionText = "Partition jouée\n"
     end
-  elseif self.state=="harmonic" then
+  elseif self.state == "harmonic" then
     self.harmonicEditor:keypressed(key)
   end
 end

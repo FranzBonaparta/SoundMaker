@@ -42,6 +42,7 @@ function HarmonicEditor:initializeInstruments()
 end
 
 function HarmonicEditor:initializeShapesButtons()
+  self.shapesButtons={}
   local shapes = { "sine", "square", "triangle", "saw", "noise" }
   for i = 1, #shapes do
     local btn = Button(300 + (i * 70), 150, 60, 20)
@@ -57,9 +58,13 @@ function HarmonicEditor:initializeShapesButtons()
         btn:setBackgroundColor(125, 0, 0)
       end
     end)
+    if btn.text==self.shapes[self.indexChosen]then
+        btn:setBackgroundColor(125, 0, 0)
+      end
     table.insert(self.shapesButtons, btn)
-  end
-  self.shapesButtons[1].onClick()
+    
+end
+  --self.shapesButtons[1].onClick()
 end
 
 function HarmonicEditor:initializeAddButtons()
@@ -70,10 +75,14 @@ function HarmonicEditor:initializeAddButtons()
   btn:setOnClick(function()
     self:addHarmonic()
   end)
-  table.insert(self.addButtons, btn)
+  self.addButtons= btn
+
 end
 
 function HarmonicEditor:initializeFields(index)
+    self.factorsFields = {}   -- 🔧 Ajouté
+  self.amplitudesFields = {}  -- 🔧 Ajouté
+  
   if self.factors[index] then
     self.factorsFields = {}
     self.amplitudesFields = {}
@@ -109,7 +118,7 @@ function HarmonicEditor:addHarmonic()
   --put the limit to 10 harmonics!
   local size = #tableFactors
   if size <= limit then
-    if self.shapes[self.indexChosen] ~= "sine" then
+    if self.shapes[self.indexChosen] then
       local lastFactor = tableFactors[size]
       local amplitudeField = InputField("float")
       local factorField = InputField("float")
@@ -122,6 +131,9 @@ function HarmonicEditor:addHarmonic()
       if self.shapes[self.indexChosen] == "square" then
         table.insert(tableFactors, lastFactor + 2)
         table.insert(tableAmplitude, 1 / (lastFactor + 2))
+      elseif self.shapes[self.indexChosen] == "sine" then
+        table.insert(tableFactors, lastFactor + 1)
+        table.insert(tableAmplitude, (1 - (0.2*lastFactor)))
       elseif self.shapes[self.indexChosen] == "triangle" then
         table.insert(tableFactors, lastFactor + 2)
         table.insert(tableAmplitude, 1 / ((lastFactor + 2) ^ 2))
@@ -158,11 +170,12 @@ function HarmonicEditor:draw(index)
   for _, btn in ipairs(self.shapesButtons) do
     btn:draw()
   end
-  for i, btn in ipairs(self.addButtons) do
-    if self.shapes[i] ~= "sine" and self.shapes[i] ~= "noise" then
+--[[  for i, btn in ipairs(self.addButtons) do
+    if self.shapes[i] ~= "noise" then
       btn:draw()
     end
-  end
+  end]]
+  self.addButtons:draw()
 end
 
 function HarmonicEditor:mousepressed(mx, my, button)
@@ -171,9 +184,7 @@ function HarmonicEditor:mousepressed(mx, my, button)
   for _, btn in ipairs(self.shapesButtons) do
     btn:mousepressed(mx, my, button)
   end
-  for _, btn in ipairs(self.addButtons) do
-    btn:mousepressed(mx, my, button)
-  end
+  self.addButtons:mousepressed(mx, my, button)
   for _, field in ipairs(self.factorsFields) do
     field:mousepressed(mx, my, button)
   end

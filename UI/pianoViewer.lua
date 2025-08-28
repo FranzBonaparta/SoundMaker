@@ -64,18 +64,24 @@ function PianoViewer:updatePartition(value, duration)
   self.partitionText = self.partitionText .. value.name .. ", "
 end
 
-function PianoViewer:playPartition(simpleMusicPlayer)
-  simpleMusicPlayer:playMelody(self.partition, function(f, d, a) return soundMaker:createSineWave(f, d, a) end)
+function PianoViewer:playPartition(simpleMusicPlayer, instrument)
+  local instrumentIndex=instrument.indexChosen
+  local type,attack,decay,harmonicFactors,harmonicAmplitudes=
+  instrument.shapes[instrumentIndex], instrument.attacks[instrumentIndex],
+  instrument.decays[instrumentIndex],instrument.factors[instrumentIndex],
+  instrument.amplitudes[instrumentIndex]
+  simpleMusicPlayer:playMelody(self.partition, function(f,d,a) return soundMaker:generatePersonnalizedNote(f,d,a,type,
+  attack,decay,harmonicFactors,harmonicAmplitudes) end)
 end
 
-function PianoViewer:mousepressed(mx, my, button)
+function PianoViewer:mousepressed(mx, my, button, instrument)
   local duration = 0
   if button == 1 then duration = 0.2 elseif button == 2 then duration = 0.1 elseif button == 3 then duration = 0.4 end
   if button == 1 or button == 2 or button == 3 then
     for _, value in ipairs(self.blackTouches) do
       if value:mouseIsHover(mx, my) then
         self:updatePartition(value, duration)
-        value:play(duration)
+        value:play(duration, instrument)
         print(value.note)
         return
       end
@@ -84,7 +90,7 @@ function PianoViewer:mousepressed(mx, my, button)
     for _, value in ipairs(self.whiteTouches) do
       if value:mouseIsHover(mx, my) then
         self:updatePartition(value, duration)
-        value:play(duration)
+        value:play(duration, instrument)
                 print(value.note)
 
         return

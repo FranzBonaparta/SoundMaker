@@ -58,8 +58,16 @@ function PianoKey:setNote(note)
   self.note = note
 end
 
-function PianoKey:play(duration)
-  soundMaker:generateFluteNote(self.note, duration):play()
+function PianoKey:play(duration, instrument)
+  --frequency,duration, amplitude,type,
+  --attack, decay, harmonicFactors, harmonicAmplitudes
+  local instrumentIndex=instrument.indexChosen
+  local amplitude,type,attack,decay,harmonicFactors,harmonicAmplitudes=
+  0.3,instrument.shapes[instrumentIndex], instrument.attacks[instrumentIndex],
+  instrument.decays[instrumentIndex],instrument.factors[instrumentIndex],
+  instrument.amplitudes[instrumentIndex]
+  soundMaker:generatePersonnalizedNote(self.note, duration,amplitude,type,
+  attack,decay,harmonicFactors,harmonicAmplitudes):play()
   self.touchTimer = duration
 end
 

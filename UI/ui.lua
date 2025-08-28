@@ -81,7 +81,8 @@ end
 
 function UI:mousepressed(mx, my, button)
   if self.state == "piano" then
-    self.piano:mousepressed(mx, my, button)
+    local instrument=self.harmonicEditor
+    self.piano:mousepressed(mx, my, button, instrument)
     for _, instr in ipairs(self.instruments) do
       instr:mousepressed(mx, my, button)
       if button == 2 and instr:isHovered(mx, my) then
@@ -108,7 +109,7 @@ function UI:keypressed(key, player)
   if self.state == "piano" then
      player:keypressed(key)
     if key == "tab" and #self.piano.partition > 0 then
-      self.piano:playPartition(player)
+      self.piano:playPartition(player, self.harmonicEditor)
     end
     if key == "backspace" then
       self.piano.partition = {}

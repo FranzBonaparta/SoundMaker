@@ -6,7 +6,7 @@ local InputField = require("inputField")
 function HarmonicEditor:new(x, y, instrumentsAmount)
   self.x = x
   self.y = y
-  self.indexChosen = 0
+  self.indexChosen = 1
   self.size = instrumentsAmount or 10
   self.attacks = {}
   self.decays = {}

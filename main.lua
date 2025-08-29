@@ -1,4 +1,7 @@
--- main.lua - entry point of your Love2D project
+-- SoundMaker
+-- Made by Jojopov
+-- Licence : GNU GPL v3 - 2025
+-- https://www.gnu.org/licenses/gpl-3.0.html
 local SimpleMusicPlayer = require("engine.simpleMusicPlayer")
 local player = SimpleMusicPlayer()
 local UI=require("UI.ui")

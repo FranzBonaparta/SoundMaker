@@ -22,9 +22,9 @@ function PianoViewer:new(x, y)
     whiteKey:setName(whiteNotes[w])
     table.insert(self.whiteTouches, whiteKey)
   end
-  -- Ex : motif C-D-E F-G-A-B → 7 touches blanches par octave
-  local pattern = { true, true, false, true, true, true, false } -- positions avec noire
-  -- Ajout manuel de la touche noire isolée (As0)
+-- Ex: pattern C-D-E F-G-A-B → 7 white keys per octave
+  local pattern = { true, true, false, true, true, true, false } -- positions with quarter note
+-- Manual addition of the isolated black key (As0)
   local firstBlackKey = PianoKey("black", x, y, width, blackHeight, true)
   table.insert(self.blackTouches, firstBlackKey)
 

@@ -73,15 +73,15 @@ function InputField:textinput(t)
     end]]
         if not self.focused then return end
 
-    -- Proposer la version potentielle du texte si on ajoutait t
+    -- Propose the potential version of the text if we added t
     local before = self.text:sub(1, self.cursorPos - 1)
     local after = self.text:sub(self.cursorPos)
     local potentialText = before .. t .. after
 
-    -- Vérification spécifique selon le type de champ
+    -- Specific verification according to the type of field
     local isValid = true
     if self.type == "float" then
-        -- autorise -3.14, 0.5, .5, -0.5 etc.
+        -- allows -3.14, 0.5, .5, -0.5 etc.
         isValid = potentialText:match("^%-?%d*%.?%d*$") ~= nil
     elseif self.type == "numeric" then
         isValid = potentialText:match("^%d*$") ~= nil
@@ -89,7 +89,7 @@ function InputField:textinput(t)
         isValid = potentialText:match("^%a*$") ~= nil
     end
 
-    -- Si la chaîne finale est valide, l'insérer
+    -- If the final string is valid, insert it
     if isValid and self.font:getWidth(potentialText) < self.width then
         self.text = potentialText
         self.cursorPos = self.cursorPos + #t
@@ -145,7 +145,7 @@ function InputField:keypressed(key)
 
     local action = keyActions[key]
     if action and self.focused then action() elseif key:match("^kp%d$") then
-        -- pavé numérique : convertir "kp1" → "1", etc.
+        -- numeric keypad: convert "kp1" → "1", etc.
         local digit = key:sub(3, 3)
         self:textinput(digit)
     elseif key == "kp." then

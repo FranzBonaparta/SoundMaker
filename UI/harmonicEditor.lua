@@ -80,8 +80,8 @@ function HarmonicEditor:initializeAddButtons()
 end
 
 function HarmonicEditor:initializeFields(index)
-    self.factorsFields = {}   -- 🔧 Ajouté
-  self.amplitudesFields = {}  -- 🔧 Ajouté
+    self.factorsFields = {}   -- 🔧 Added
+  self.amplitudesFields = {}  -- 🔧 Added
   
   if self.factors[index] then
     self.factorsFields = {}
@@ -104,12 +104,12 @@ function HarmonicEditor:initializeFields(index)
   end
 end
 
---[[Forme d’onde	harmonicFactors	harmonicAmplitudes
-Sinusoïdale 1.0 1.0
-Carré	Impairs seulement (1,3,5…)	1/n (ex: 1, 1/3, 1/5…)
-Triangle	Impairs (1,3,5…)	1/n² (ex: 1, 1/9, 1/25…)
-Dent de scie	Tous (1,2,3,...)	1/n (mais signes alternés si besoin)
-Bruitage	Aléatoire ou bruit blanc	Amplitudes variables, ou sans harmonique claire
+--[[Waveform harmonicFactors harmonicAmplitudes
+Sine 1.0 1.0
+Square Odd only (1, 3, 5…) 1/n (e.g.: 1, 1/3, 1/5…)
+Triangle Odd (1, 3, 5…) 1/n² (e.g.: 1, 1/9, 1/25…)
+Sawtooth All (1, 2, 3,...) 1/n (but alternating signs if necessary)
+Sound Effect Random or white noise Variable amplitudes, or no clear harmonic
 ]]
 function HarmonicEditor:addHarmonic()
   local limit = 10

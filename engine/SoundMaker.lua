@@ -159,9 +159,9 @@ function SoundMaker:createWhiteNoise(duration, amplitude)
     return love.audio.newSource(soundData)
 end
 
--- --- Petits sons préfaits pour ton interface ---
+-- --- Small pre-made sounds for the interface ---
 
--- Bip de sélection (menu)
+--  Selection beep (menu)
 function SoundMaker:menuSelect()
     return self:createSquareWave(self.Notes.A5, 0.1, 0.3)
 end
@@ -171,17 +171,17 @@ function SoundMaker:menuConfirm()
     return self:createSineWave(self.Notes.C5, 0.15, 0.4)
 end
 
--- Erreur
+-- Error
 function SoundMaker:menuError()
     return self:createSawtoothWave(self.Notes.G3, 0.2, 0.4)
 end
 
--- Petit bruit de "menu move"
+-- Little "menu move" noise
 function SoundMaker:menuMove()
     return self:createTriangleWave(self.Notes.E5, 0.05, 0.2)
 end
 
--- Explosion simple (bruit blanc)
+-- Single explosion (white noise)
 function SoundMaker:explosion()
     return self:createWhiteNoise(0.3, 0.5)
 end

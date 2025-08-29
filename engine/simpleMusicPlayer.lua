@@ -59,7 +59,7 @@ function SimpleMusicPlayer:update(dt)
             self.timer = noteData.duration
             self.currentIndex = self.currentIndex + 1   
         else
-            self.isPlaying = false -- Fin de la mélodie
+            self.isPlaying = false -- End of the melody
         end
     end
 end

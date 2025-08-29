@@ -1,10 +1,15 @@
 # 🎹 SoundMaker
 
 Created by **Jojopov**
-License: [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.html)  
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+[![Built with Love2D](https://img.shields.io/badge/Built%20with-Love2D-ff69b4)](https://love2d.org/) 
 2025
-![Screenshot1](./pictures/screenshot1.png)
-![Screenshot2](./pictures/screenshot2.png)
+## 📷 Screenshots
+
+<p align="center">
+  <img src="./pictures/screenshot1.png" alt="Main interface" width="400"/>
+  <img src="./pictures/screenshot2.png" alt="Playing notes" width="400"/>
+</p>
 
 **SoundMaker** is a small interactive synthesizer developed in Love2D.
 It allows you to play notes on a virtual keyboard, modify their sound parameters, and even record/replay melodies.

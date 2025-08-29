@@ -117,9 +117,15 @@ function UI:keypressed(key, player)
     if key == "tab" and #self.piano.partition > 0 then
       self.piano:playPartition(player, self.harmonicEditor)
     end
-    if key == "backspace" then
+    if key == "delete" then
       self.piano.partition = {}
-      self.piano.partitionText = "Partition jouée\n"
+      self.piano.partitionText = {"Partition jouée:\n"}
+      self.piano:updateText()
+    end
+    if key=="backspace" then
+      table.remove(self.piano.partition,#self.piano.partition)
+      table.remove(self.piano.partitionText,#self.piano.partitionText)
+      self.piano:updateText()
     end
   elseif self.state == "harmonic" then
     self.harmonicEditor:keypressed(key)

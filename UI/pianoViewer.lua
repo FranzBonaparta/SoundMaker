@@ -13,7 +13,9 @@ function PianoViewer:new(x, y)
   self.whiteTouches = {}
   self.blackTouches = {}
   self.partition = {}
-  self.partitionText = "Partition jouée:\n"
+  self.partitionText = {"Partition jouée:\n"}
+  self.text=""
+  self.textPrinted=""
   self.restTouche={}
   for w = 1, 52 do
     local whiteKey = PianoKey("white", x, y, width, whiteHeight)
@@ -42,6 +44,7 @@ function PianoViewer:new(x, y)
   restKey.note=0
   restKey.frequencySlider=nil
   self.restTouche=restKey
+  self:updateText()
 end
 
 --draw white touches
@@ -62,14 +65,23 @@ function PianoViewer:draw()
   drawBlackTouches(self)
   self.restTouche:draw()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.printf(self.partitionText, self.x, 500, 1200)
+  love.graphics.printf(self.text, self.x, 500, 1200)
 end
 
 function PianoViewer:updatePartition(value, duration)
     local label = value.note == 0 and "- -" or value.name
 
   table.insert(self.partition, { note = value.note, duration = duration })
-  self.partitionText = self.partitionText .. label .. ", "
+  table.insert(self.partitionText,label)
+  self:updateText()
+
+end
+function PianoViewer:updateText()
+  self.text=""
+    for i, txt in ipairs(self.partitionText) do
+      local link=i>1 and "," or ""
+    self.text= self.text..txt..link
+  end
 end
 
 function PianoViewer:playPartition(simpleMusicPlayer, instrument)

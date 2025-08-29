@@ -66,7 +66,7 @@ function PianoViewer:draw()
 end
 
 function PianoViewer:updatePartition(value, duration)
-    local label = value.note == 0 and "rest" or value.name
+    local label = value.note == 0 and "- -" or value.name
 
   table.insert(self.partition, { note = value.note, duration = duration })
   self.partitionText = self.partitionText .. label .. ", "

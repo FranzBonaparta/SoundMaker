@@ -50,8 +50,8 @@ function PianoKey:setName(name)
     self.frequencySlider=FrequencySlider(self.x+10,self.y+self.height+100,4,100,self.note, self.name)
   elseif self.type == "black" then
     self:setNote(soundMaker.BlackNotes[self.name])
-     self.frequencySlider=FrequencySlider(self.x+5,self.y+self.height+100,4,100,self.note, self.name)
-  end
+     self.frequencySlider=FrequencySlider(self.x+5,self.y+self.height+100,4,100,self.note, self.name)   
+    end
 end
 
 function PianoKey:setNote(note)
@@ -93,15 +93,14 @@ function PianoKey:draw()
   if self.type == "white" then
     love.graphics.setColor(10 / 255, 10 / 255, 10 / 255)
     love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
-  else
-    love.graphics.setColor(0.9, 0.9, 0.9)
-    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
-  end
-  --print name of key
-  if self.type == "white" then
+        --print name of key
     love.graphics.setColor(0, 0, 0)
     love.graphics.print(self.name, self.x + 2, self.y + self.height - 20)
+    --draw borders
   elseif self.type == "black" then
+    love.graphics.setColor(0.9, 0.9, 0.9)
+    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+      --print name of key
     love.graphics.setColor(1, 1, 1)
     love.graphics.print(self.name, self.x + 1, self.y - 20)
   end
@@ -119,8 +118,10 @@ function PianoKey:update(dt)
   if self.touchTimer > 0 then
     self.touchTimer = math.max(self.touchTimer - dt, 0)
   end
-  self.frequencySlider:update(dt)
+  if self.frequencySlider then
+    self.frequencySlider:update(dt)
   self.note=self.note~=self.frequencySlider.modifiedNote and self.frequencySlider.modifiedNote or self.note
+  end
 end
 
 return PianoKey

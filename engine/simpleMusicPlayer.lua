@@ -51,10 +51,13 @@ function SimpleMusicPlayer:update(dt)
     if self.timer <= 0 then
         local noteData = self.currentMelody[self.currentIndex]
         if noteData then
-            local sound = self.instrument(noteData.note, noteData.duration, 0.3)
-            sound:play()
+            --check if the note is silence
+            if noteData.note~=0 then
+              local sound = self.instrument(noteData.note, noteData.duration, 0.3)
+            sound:play()  
+            end
             self.timer = noteData.duration
-            self.currentIndex = self.currentIndex + 1
+            self.currentIndex = self.currentIndex + 1   
         else
             self.isPlaying = false -- Fin de la mélodie
         end

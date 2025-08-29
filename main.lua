@@ -15,7 +15,7 @@ function love.load()
     love.graphics.setBackgroundColor(0.1, 0.1, 0.1) -- dark grey background
 end
 
--- Function called at each frame, it updates the logic of the game
+-- Function called at each frame, it updates the logic of the app
 function love.update(dt)
     -- dt = delta time = time since last frame
     -- Used for fluid movements

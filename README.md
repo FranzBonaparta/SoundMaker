@@ -2,8 +2,10 @@
 
 Created by **Jojopov**
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
-[![Built with Love2D](https://img.shields.io/badge/Built%20with-Love2D-ff69b4)](https://love2d.org/) 
+[![Built with Love2D](https://img.shields.io/badge/Built%20with-Love2D-ff69b4)](https://love2d.org/)
+
 2025
+
 ## 📷 Screenshots
 
 <p align="center">
@@ -50,4 +52,5 @@ Make sure you have [Love2D 11.5](https://love2d.org/) installed.
 
 If you're on Linux
 <code>love .</code>
-For Windows, run the build.sh script or follow the commands listed there, then run the .exe!
+For Windows, download the official zipped 32 or 64 bit executable (not the installer) from https://www.love2d.org/ and copy it to a new folder tools/love-11.5-win32/
+ run the build.sh script or follow the commands listed there, then run the .exe!

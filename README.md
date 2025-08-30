@@ -28,6 +28,24 @@ It allows you to play notes on a virtual keyboard, modify their sound parameters
 
 - 🎶 Visual highlighting of played notes.
 
+## Keys
+
+🎹 Piano Controls:
+
+- **Left Click** – Play a black note
+- **Middle Click** – Play a white note
+- **Right Click** – Play a quaver (shorter note)
+
+📝 Partition Controls:
+
+- **Tab** – Play the current partition
+- **Delete** – Clear the entire partition
+- **Backspace** – Remove the last note from the partition
+
+🎧 Programmatic Sounds:
+
+- **space**, **a**, **z**, **e**, **r**, **t**, **y**, **1**, **2**, **3** – Trigger custom or synthesized sounds
+
 ## 🛠 Materials required
 
 - Any code editor

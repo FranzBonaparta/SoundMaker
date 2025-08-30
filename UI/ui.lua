@@ -5,9 +5,10 @@ local HarmonicEditor = require("UI.harmonicEditor")
 local Button = require("UI.button")
 
 --local FrequencySlider=require("UI.frequencySlider")
-function UI:new()
+function UI:new(player)
   self.piano = PianoViewer(50, 100)
   self.harmonicEditor = HarmonicEditor(50, 100)
+  self.player=player
   self.instruments = {}
   self.instrumentIndex = 0
   self:setInstrumentsButtons()
@@ -66,6 +67,9 @@ end
 
 function UI:update(dt)
   if self.state == "piano" then
+    self.player:update(dt, function(note, duration)
+      self.piano:highlightNote(note, duration)
+    end)
     self.piano:update(dt)
   else
     self.harmonicEditor:update(dt)

@@ -5,7 +5,7 @@
 local SimpleMusicPlayer = require("engine.simpleMusicPlayer")
 local player = SimpleMusicPlayer()
 local UI=require("UI.ui")
-local ui=UI()
+local ui=UI(player)
 
 -- Function called only once at the beginning
 function love.load()

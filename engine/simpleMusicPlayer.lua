@@ -43,7 +43,7 @@ function SimpleMusicPlayer:playMelody(melody, instrument)
     self.instrument = instrument or self.defaultInstrument
 end
 
-function SimpleMusicPlayer:update(dt)
+function SimpleMusicPlayer:update(dt, onNotePlayed)
     if not self.isPlaying or not self.currentMelody then return end
 
     self.timer = self.timer - dt
@@ -55,7 +55,11 @@ function SimpleMusicPlayer:update(dt)
             if noteData.note ~= 0 then
                 local sound = self.instrument(noteData.note, noteData.duration, 0.3)
                 sound:play()
+                if onNotePlayed then
+                    onNotePlayed(noteData.note, noteData.duration)
+                end
             end
+
             self.timer = noteData.duration
             self.currentIndex = self.currentIndex + 1
         else

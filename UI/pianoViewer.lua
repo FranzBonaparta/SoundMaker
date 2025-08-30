@@ -83,6 +83,23 @@ function PianoViewer:updateText()
     self.text= self.text..txt..link
   end
 end
+function PianoViewer:highlightNote(note, duration)
+  for _, key in ipairs(self.whiteTouches) do
+    if key.note == note then
+      key:highlight(duration)
+      return
+    end
+  end
+  for _, key in ipairs(self.blackTouches) do
+    if key.note == note then
+      key:highlight(duration)
+      return
+    end
+  end
+  if note == 0 then
+    self.restTouche:highlight(duration)
+  end
+end
 
 function PianoViewer:playPartition(simpleMusicPlayer, instrument)
   local instrumentIndex=instrument.indexChosen

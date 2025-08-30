@@ -83,6 +83,7 @@ function PianoViewer:updateText()
     self.text= self.text..txt..link
   end
 end
+
 function PianoViewer:highlightNote(note, duration)
   for _, key in ipairs(self.whiteTouches) do
     if key.note == note then

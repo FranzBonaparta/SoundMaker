@@ -68,7 +68,8 @@ function PianoKey:play(duration, instrument)
   instrument.amplitudes[instrumentIndex]
   soundMaker:generatePersonnalizedNote(self.note, duration,amplitude,type,
   attack,decay,harmonicFactors,harmonicAmplitudes):play()
-  self:highlight(duration)
+  self.touchTimer = duration
+  --self:highlight(duration)
 end
 
 function PianoKey:mouseIsHover(mx, my)

@@ -42,7 +42,7 @@ function HarmonicEditor:initializeInstruments()
 end
 
 function HarmonicEditor:initializeShapesButtons()
-  self.shapesButtons={}
+  self.shapesButtons = {}
   local shapes = { "sine", "square", "triangle", "saw", "noise" }
   for i = 1, #shapes do
     local btn = Button(300 + (i * 70), 150, 60, 20)
@@ -58,12 +58,11 @@ function HarmonicEditor:initializeShapesButtons()
         btn:setBackgroundColor(125, 0, 0)
       end
     end)
-    if btn.text==self.shapes[self.indexChosen]then
-        btn:setBackgroundColor(125, 0, 0)
-      end
+    if btn.text == self.shapes[self.indexChosen] then
+      btn:setBackgroundColor(125, 0, 0)
+    end
     table.insert(self.shapesButtons, btn)
-    
-end
+  end
   --self.shapesButtons[1].onClick()
 end
 
@@ -75,14 +74,13 @@ function HarmonicEditor:initializeAddButtons()
   btn:setOnClick(function()
     self:addHarmonic()
   end)
-  self.addButtons= btn
-
+  self.addButtons = btn
 end
 
 function HarmonicEditor:initializeFields(index)
-    self.factorsFields = {}   -- 🔧 Added
-  self.amplitudesFields = {}  -- 🔧 Added
-  
+  self.factorsFields = {}    -- 🔧 Added
+  self.amplitudesFields = {} -- 🔧 Added
+
   if self.factors[index] then
     self.factorsFields = {}
     self.amplitudesFields = {}
@@ -126,20 +124,16 @@ function HarmonicEditor:addHarmonic()
       local newIndex = size + 1
       factorField:setCoords(self.x, diffY + (newIndex * 20), 50)
       amplitudeField:setCoords(diffX, diffY + (newIndex * 20), 50)
-
-
-      if self.shapes[self.indexChosen] == "square" then
-        table.insert(tableFactors, lastFactor + 2)
-        table.insert(tableAmplitude, 1 / (lastFactor + 2))
-      elseif self.shapes[self.indexChosen] == "sine" then
-        table.insert(tableFactors, lastFactor + 1)
-        table.insert(tableAmplitude, (1 - (0.2*lastFactor)))
-      elseif self.shapes[self.indexChosen] == "triangle" then
-        table.insert(tableFactors, lastFactor + 2)
-        table.insert(tableAmplitude, 1 / ((lastFactor + 2) ^ 2))
-      elseif self.shapes[self.indexChosen] == "saw" then
-        table.insert(tableFactors, lastFactor + 1)
-        table.insert(tableAmplitude, (1 / (lastFactor + 1)) * ((-1) ^ lastFactor))
+      local shapes = { "sine", "square", "triangle", "saw" }
+      local newFactors = { lastFactor + 1, lastFactor + 2, lastFactor + 2, lastFactor + 1 }
+      local newAmplitudes = { (1 - (0.2 * lastFactor)), 1 / (lastFactor + 2), 1 / ((lastFactor + 2) ^ 2), (1 / (lastFactor + 1)) *
+      ((-1) ^ lastFactor) }
+      for i = 1, #shapes do
+        if self.shapes[self.indexChosen] == shapes[i] then
+          table.insert(tableFactors, newFactors[i])
+          table.insert(tableAmplitude, newAmplitudes[i])
+          break
+        end
       end
       factorField:setPlaceholder(tableFactors[newIndex])
       amplitudeField:setPlaceholder(string.format("%.3f", tableAmplitude[newIndex]))
@@ -170,7 +164,7 @@ function HarmonicEditor:draw(index)
   for _, btn in ipairs(self.shapesButtons) do
     btn:draw()
   end
---[[  for i, btn in ipairs(self.addButtons) do
+  --[[  for i, btn in ipairs(self.addButtons) do
     if self.shapes[i] ~= "noise" then
       btn:draw()
     end
@@ -203,18 +197,17 @@ function HarmonicEditor:update(dt)
   for i, field in ipairs(self.factorsFields) do
     field:update(dt)
     if field.isValidated and tonumber(field.text) then
-      self.factors[self.indexChosen][i]=tonumber(field.text)
-      print("factor "..i.." set to "..field.text)
-      field.isValidated=false
-
+      self.factors[self.indexChosen][i] = tonumber(field.text)
+      print("factor " .. i .. " set to " .. field.text)
+      field.isValidated = false
     end
   end
   for i, field in ipairs(self.amplitudesFields) do
     field:update(dt)
     if field.isValidated and tonumber(field.text) then
-      self.amplitudes[self.indexChosen][i]=tonumber(field.text)
-      print("amplitude "..i.." set to "..field.text)
-      field.isValidated=false
+      self.amplitudes[self.indexChosen][i] = tonumber(field.text)
+      print("amplitude " .. i .. " set to " .. field.text)
+      field.isValidated = false
     end
   end
 end

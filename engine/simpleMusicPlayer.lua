@@ -52,12 +52,12 @@ function SimpleMusicPlayer:update(dt)
         local noteData = self.currentMelody[self.currentIndex]
         if noteData then
             --check if the note is silence
-            if noteData.note~=0 then
-              local sound = self.instrument(noteData.note, noteData.duration, 0.3)
-            sound:play()  
+            if noteData.note ~= 0 then
+                local sound = self.instrument(noteData.note, noteData.duration, 0.3)
+                sound:play()
             end
             self.timer = noteData.duration
-            self.currentIndex = self.currentIndex + 1   
+            self.currentIndex = self.currentIndex + 1
         else
             self.isPlaying = false -- End of the melody
         end
@@ -69,17 +69,18 @@ function SimpleMusicPlayer:isFinished()
 end
 
 function SimpleMusicPlayer:keypressed(key)
-    if key == "space" then
-        soundMaker:createSquareWave(440, 0.2):play()
-    elseif key == "kp0" then
-        soundMaker:createSineWave(440, 0.2):play()
-    elseif key == "kp1" then
-        soundMaker:createTriangleWave(440, 0.2):play()
-    elseif key == "kp2" then
-        soundMaker:createSawtoothWave(440, 0.2):play()
-    elseif key == "kp3" then
-        soundMaker:createWhiteNoise(0.3, 0.2):play()
-        --[[    elseif key=="a" then
+    local inputs = { "space", "kp0", "kp1", "kp2", "kp3",
+        "a", "z", "e", "r", "t", "y" }
+    local outputs = { soundMaker:createSquareWave(440, 0.2), soundMaker:createSineWave(440, 0.2),
+        soundMaker:createTriangleWave(440, 0.2), soundMaker:createSawtoothWave(440, 0.2),
+        soundMaker:createWhiteNoise(0.3, 0.2), fluteSources.C4, fluteSources.D4, fluteSources.E4,
+        fluteSources.F4, fluteSources.G4, soundMaker:generateFluteNote(notes.E4, 0.5) }
+    for i = 1, #inputs do
+        if key == inputs[i] then
+            outputs[i]:play()
+        end
+    end
+    --[[    elseif key=="a" then
         soundMaker:menuSelect():play()
     elseif key=="z" then
         soundMaker:menuConfirm():play()
@@ -89,13 +90,6 @@ function SimpleMusicPlayer:keypressed(key)
         soundMaker:menuMove():play()
     elseif key=="t" then
         soundMaker:explosion():play()]]
-        elseif key == "a" then fluteSources.C4:play()
-        elseif key == "z" then fluteSources.D4:play() 
-        elseif key == "e" then fluteSources.E4:play() 
-        elseif key == "r" then fluteSources.F4:play() 
-        elseif key == "t" then fluteSources.G4:play() 
-        elseif key=="y" then soundMaker:generateFluteNote(notes.E4,0.5):play()
-    end
 end
 
 return SimpleMusicPlayer

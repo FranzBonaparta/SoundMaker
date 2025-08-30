@@ -78,6 +78,7 @@ function SimpleMusicPlayer:keypressed(key)
     for i = 1, #inputs do
         if key == inputs[i] then
             outputs[i]:play()
+            break
         end
     end
     --[[    elseif key=="a" then

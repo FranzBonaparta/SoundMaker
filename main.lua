@@ -19,7 +19,7 @@ end
 function love.update(dt)
     -- dt = delta time = time since last frame
     -- Used for fluid movements
-    player:update(dt)
+    --player:update(dt)
     ui:update(dt)
 end
 

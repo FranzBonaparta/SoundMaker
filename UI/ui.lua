@@ -68,9 +68,9 @@ end
 function UI:update(dt)
   if self.state == "piano" then
     --highlight notes played on reading partition -> see simpleMusicPlayer:update
- --[[   self.player:update(dt, function(note, duration)
+    self.player:update(dt, function(note, duration)
       self.piano:highlightNote(note, duration)
-    end)]]
+    end)
     self.piano:update(dt)
   else
     self.harmonicEditor:update(dt)

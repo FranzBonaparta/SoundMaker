@@ -2,7 +2,7 @@ local Object = require("libs.classic")
 local HarmonicEditor = Object:extend()
 local Knob = require("UI.knob")
 local Button = require("UI.button")
-local InputField = require("inputField")
+local InputField = require("libs.inputField")
 local FileManager = require("fileManager")
 
 function HarmonicEditor:new(x, y, instrumentsAmount)
@@ -200,7 +200,7 @@ function HarmonicEditor:update(dt)
     field:update(dt)
     if field.isValidated and tonumber(field.text) then
       self.factors[self.indexChosen][i] = tonumber(field.text)
-      print("factor " .. i .. " set to " .. field.text)
+      --print("factor " .. i .. " set to " .. field.text)
       field.isValidated = false
     end
   end
@@ -208,7 +208,7 @@ function HarmonicEditor:update(dt)
     field:update(dt)
     if field.isValidated and tonumber(field.text) then
       self.amplitudes[self.indexChosen][i] = tonumber(field.text)
-      print("amplitude " .. i .. " set to " .. field.text)
+      --print("amplitude " .. i .. " set to " .. field.text)
       field.isValidated = false
     end
   end
@@ -246,7 +246,7 @@ function HarmonicEditor:keypressed(key)
 
     self:initializeFields(self.indexChosen) -- 🔁 update all fields
 
-    print("Loaded instrument:", shape, attack, decay, "#factors=" .. #factors, "#amplitudes=" .. #amplitudes)
+    --print("Loaded instrument:", shape, attack, decay, "#factors=" .. #factors, "#amplitudes=" .. #amplitudes)
   end
 end
 

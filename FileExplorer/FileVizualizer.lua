@@ -148,12 +148,15 @@ end
 function FileVizualizer:setRatio()
     local totalLines = #self.lines
     local visibleLinesCount = #self.visibleLines
-    local firstLineIndex = self.visibleLines[1].index
+    if #self.visibleLines>0 then
+          local firstLineIndex = self.visibleLines[1].index
 
     local scrollRatio = firstLineIndex / totalLines
     local scrollBarHeight = (visibleLinesCount / totalLines) * self.height
     local scrollBarY = self.y + scrollRatio * self.height
-    self.scrollBar:setRatio(scrollRatio, scrollBarHeight, scrollBarY)
+    self.scrollBar:setRatio(scrollRatio, scrollBarHeight, scrollBarY)  
+    end
+
 end
 
 function FileVizualizer:wheelmoved(mx, my)

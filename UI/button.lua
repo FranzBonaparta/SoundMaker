@@ -22,6 +22,13 @@ function Button:new(x, y, width, height, text, f, angle)
     self.locked=false
     self.tooltip=nil
 end
+function Button:setAngle(a)
+    self.angle=a
+end
+function Button:setCoord(x,y)
+    self.x=x
+    self.y=y
+end
 function Button:setIndex(index)
     self.index=index
 end

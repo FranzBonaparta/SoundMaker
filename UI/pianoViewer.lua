@@ -59,7 +59,11 @@ local function drawBlackTouches(self)
     b:draw()
   end
 end
-
+function PianoViewer:writeText()
+  for _, value in ipairs(self.partition) do
+    
+  end
+end
 function PianoViewer:draw()
   drawWhiteTouches(self)
   drawBlackTouches(self)
@@ -76,9 +80,14 @@ function PianoViewer:updatePartition(value, duration)
   self:updateText()
 
 end
+function PianoViewer:initText()
+    self.partitionText = {"Partition jouée:\n"}
+
+end
 function PianoViewer:updateText()
   self.text=""
     for i, txt in ipairs(self.partitionText) do
+      --print(txt)
       local link=i>1 and "," or ""
     self.text= self.text..txt..link
   end
@@ -120,7 +129,7 @@ function PianoViewer:mousepressed(mx, my, button, instrument)
       if value:mouseIsHover(mx, my) then
         self:updatePartition(value, duration)
         value:play(duration, instrument)
-        print(value.note)
+        --print(value.note)
         return
       end
       value:mousepressed(mx,my,button)
@@ -129,7 +138,7 @@ function PianoViewer:mousepressed(mx, my, button, instrument)
       if value:mouseIsHover(mx, my) then
         self:updatePartition(value, duration)
         value:play(duration, instrument)
-                print(value.note)
+                --print(value.note)
 
         return
       end

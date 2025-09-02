@@ -18,6 +18,7 @@ function InputField:new(type)
     self.placeholder = "Write here"
     self.cursorState = "arrow"
     self.isValidated=false
+    self.color={1,1,1}
 end
 function InputField:setCoords(x,y,width)
     self.x=x
@@ -27,14 +28,18 @@ end
 function InputField:setType(type)
     self.type=type
 end
+function InputField:setColor(color)
+    self.color=color
+end
 -- Draw the text and cursor
 function InputField:draw()
     love.graphics.setFont(self.font)
-    love.graphics.setColor(1, 1, 1, 0.3)
+    local r,g,b=self.color[1]/255, self.color[2]/255, self.color[3]/255
+    love.graphics.setColor(r, g, b, 0.3)
     love.graphics.rectangle("fill", self.x - 3, self.y - 3, self.width + 3, self.height + 3)
     --print textinput
     if #self.text > 0 then
-        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.setColor(r, g, b, 1)
         love.graphics.printf(self.text, self.x, self.y, self.width, "left")
     else
         --placeholder

@@ -31,13 +31,37 @@ function FileManager.saveInstrument(name, harmonicEditor, index)
     love.filesystem.write(path, fileData)
     --print("Sprite sauvé dans : " .. path)
 end
+function FileManager.savePartition(name,pianoViewer)
+        local path = "partitions/" .. name .. ".lua"
+    local fileData = "return {\n"
+    local partition=pianoViewer.partition
+    local partitionText=pianoViewer.partitionText
+    fileData=fileData.."partition = {\n"
+    for i, prt in ipairs(partition)do
+        fileData=fileData.."{ note = "..prt.note..",\n"
+        fileData=fileData..string.format("name = %q",partitionText[i+1])..",\n"
+        fileData=fileData.."duration = "..prt.duration.."}"
+        if i<#partition then
+            fileData=fileData..","
+        end
+        fileData=fileData.."\n"
+    end
+        fileData=fileData.."}\n"
 
+    fileData=fileData.."}"
+love.filesystem.createDirectory("partitions") -- Create folder if necessary
+    love.filesystem.write(path, fileData)
+end
 function FileManager.loadInstrument(name)
     local chunk = love.filesystem.load("instruments/"..name..".lua")
     local data = chunk()
     return data.shape, data.attack, data.decay, data.factors, data.amplitudes
 end
-
+function FileManager.loadPartition(name)
+        local chunk = love.filesystem.load(name)
+    local data = chunk()
+    return data.partition
+end
 function FileManager.fileTree(folder, fileTree)
     local filesTable = love.filesystem.getDirectoryItems(folder)
     for i, v in ipairs(filesTable) do

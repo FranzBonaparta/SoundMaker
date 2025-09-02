@@ -3,12 +3,11 @@ local UI = Object:extend()
 local PianoViewer = require("UI.pianoViewer")
 local HarmonicEditor = require("UI.harmonicEditor")
 local Button = require("UI.button")
-
 --local FrequencySlider=require("UI.frequencySlider")
 function UI:new(player)
   self.piano = PianoViewer(50, 100)
   self.harmonicEditor = HarmonicEditor(50, 100)
-  self.player=player
+  self.player = player
   self.instruments = {}
   self.instrumentIndex = 0
   self:setInstrumentsButtons()
@@ -47,7 +46,7 @@ function UI:setInstrumentsButtons()
 
         self.instrumentIndex = instrument.index
         self.harmonicEditor.indexChosen = instrument.index
-        
+
         self.harmonicEditor.attackKnob.value = self.harmonicEditor.attacks[instrument.index]
         self.harmonicEditor.decayKnob.value = self.harmonicEditor.decays[instrument.index]
         self.harmonicEditor:initializeFields(self.instrumentIndex)
@@ -57,7 +56,7 @@ function UI:setInstrumentsButtons()
       end
     end)
     instrument:setBackgroundColor(125, 125, 125)
-    table.insert(self.instruments,i, instrument)
+    table.insert(self.instruments, i, instrument)
   end
   --choose default 1 instrument
   if self.instruments[1] then
@@ -68,9 +67,6 @@ end
 function UI:update(dt)
   if self.state == "piano" then
     --highlight notes played on reading partition -> see simpleMusicPlayer:update
-    self.player:update(dt, function(note, duration)
-      self.piano:highlightNote(note, duration)
-    end)
     self.piano:update(dt)
   else
     self.harmonicEditor:update(dt)
@@ -124,16 +120,20 @@ function UI:keypressed(key, player)
     end
     if key == "delete" then
       self.piano.partition = {}
-      self.piano.partitionText = {"Partition jouée:\n"}
+      self.piano.partitionText = { "Partition jouée:\n" }
       self.piano:updateText()
     end
-    if key=="backspace" then
-      table.remove(self.piano.partition,#self.piano.partition)
-      table.remove(self.piano.partitionText,#self.piano.partitionText)
-      self.piano:updateText()
+    if key == "backspace" then
+      if #self.piano.partition >= 1 then
+        table.remove(self.piano.partition, #self.piano.partition)
+        table.remove(self.piano.partitionText, #self.piano.partitionText)
+        self.piano:updateText()
+      end
     end
+
   elseif self.state == "harmonic" then
     self.harmonicEditor:keypressed(key)
+
   end
 end
 

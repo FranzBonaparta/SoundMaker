@@ -4,13 +4,14 @@
 -- https://www.gnu.org/licenses/gpl-3.0.html
 local SimpleMusicPlayer = require("engine.simpleMusicPlayer")
 local player = SimpleMusicPlayer()
-local UI=require("UI.ui")
-local ui=UI(player)
+local UI = require("UI.ui")
+local ui = UI(player)
 
 -- Function called only once at the beginning
 function love.load()
-
     -- Initialization of resources (images, sounds, variables)
+        love.filesystem.setIdentity("SoundMaker")
+    love.filesystem.setIdentity(love.filesystem.getIdentity(), true)
     player:playIntro()
     love.graphics.setBackgroundColor(0.1, 0.1, 0.1) -- dark grey background
 end
@@ -19,7 +20,12 @@ end
 function love.update(dt)
     -- dt = delta time = time since last frame
     -- Used for fluid movements
-    --player:update(dt)
+    if ui.state == "piano" and ui.player then
+        --highlight notes from melody played
+        ui.player:update(dt, function(note, duration)
+            ui.piano:highlightNote(note, duration)
+        end)
+    end
     ui:update(dt)
 end
 
@@ -33,16 +39,16 @@ end
 function love.mousepressed(mx, my, button)
     ui:mousepressed(mx, my, button)
 end
+
 function love.mousereleased(mx, my, button)
     ui:mousereleased(mx, my, button)
 end
+
 -- Function called at each touch
 function love.keypressed(key)
     -- Example: exit the game with Escape
     if key == "escape" then
         love.event.quit()
     end
-    ui:keypressed(key,player)
-
-    
+    ui:keypressed(key, player)
 end

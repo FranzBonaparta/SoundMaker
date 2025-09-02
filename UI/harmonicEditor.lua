@@ -3,6 +3,8 @@ local HarmonicEditor = Object:extend()
 local Knob = require("UI.knob")
 local Button = require("UI.button")
 local InputField = require("inputField")
+local FileManager = require("fileManager")
+
 function HarmonicEditor:new(x, y, instrumentsAmount)
   self.x = x
   self.y = y
@@ -218,6 +220,37 @@ function HarmonicEditor:keypressed(key)
   end
   for _, field in ipairs(self.amplitudesFields) do
     field:keypressed(key)
+  end
+  if key == "s" then
+    FileManager.saveInstrument("testPiano", self, 1)
+  end
+  if key == "l" then
+    local shape, attack, decay, factors, amplitudes = FileManager.loadInstrument("testPiano")
+    self.attacks[self.indexChosen] = attack
+    self.attackKnob.value = attack
+    self.decays[self.indexChosen] = decay
+    self.decayKnob.value = decay
+    for i = 1, #factors do
+      if i < #factors then
+        self:addHarmonic()
+      end
+
+      self.factorsFields[i].text = tostring(factors[i])
+      self.factorsFields[i].focused = false
+      self.factorsFields[i].isValidated = true
+      self.amplitudesFields[i].text = tostring(amplitudes[i])
+      self.amplitudesFields[i].focused = false
+      self.amplitudesFields[i].isValidated = true
+    end
+    for _, btn in ipairs(self.shapesButtons) do
+      print(btn.text, shape)
+      if btn.text == shape then
+        print("match")
+        btn.onClick()
+      end
+    end
+
+    print("Loaded instrument:", shape, attack, decay, "#factors=" .. #factors, "#amplitudes=" .. #amplitudes)
   end
 end
 

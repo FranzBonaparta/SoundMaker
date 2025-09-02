@@ -230,25 +230,21 @@ function HarmonicEditor:keypressed(key)
     self.attackKnob.value = attack
     self.decays[self.indexChosen] = decay
     self.decayKnob.value = decay
-    for i = 1, #factors do
-      if i < #factors then
-        self:addHarmonic()
-      end
-
-      self.factorsFields[i].text = tostring(factors[i])
-      self.factorsFields[i].focused = false
-      self.factorsFields[i].isValidated = true
-      self.amplitudesFields[i].text = tostring(amplitudes[i])
-      self.amplitudesFields[i].focused = false
-      self.amplitudesFields[i].isValidated = true
-    end
     for _, btn in ipairs(self.shapesButtons) do
-      print(btn.text, shape)
       if btn.text == shape then
-        print("match")
         btn.onClick()
+        break
       end
     end
+      self.shapes[self.indexChosen] = shape
+      self.attacks[self.indexChosen] = attack
+      self.attackKnob.value = attack
+      self.decays[self.indexChosen] = decay
+      self.decayKnob.value = decay
+      self.factors[self.indexChosen] = factors
+      self.amplitudes[self.indexChosen] = amplitudes
+
+    self:initializeFields(self.indexChosen) -- 🔁 update all fields
 
     print("Loaded instrument:", shape, attack, decay, "#factors=" .. #factors, "#amplitudes=" .. #amplitudes)
   end

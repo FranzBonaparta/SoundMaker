@@ -52,3 +52,7 @@ function love.keypressed(key)
     end
     ui:keypressed(key, player)
 end
+
+function love.wheelmoved(mx,my)
+    ui:wheelmoved(mx,my)
+end

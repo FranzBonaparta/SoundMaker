@@ -16,7 +16,8 @@ end
 
 function ScrollBar:draw(x, y, width, height)
     local posX = x + width - 10
-    local posY = self.barY - y + 10
+    local posY = self.barY-y/2
+    --local posY = math.max(60,math.min(550,self.barY))-2*y
     love.graphics.setColor(0.7, 0.7, 0.7)
     love.graphics.rectangle("fill", posX, posY, self.barWidth, self.barHeight,4,4)
 end

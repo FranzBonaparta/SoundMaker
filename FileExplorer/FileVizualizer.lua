@@ -107,7 +107,10 @@ function FileVizualizer:draw()
             file:draw()
         end
     end
-    self.scrollBar:draw(self.x, self.y, self.width, self.height)
+    if #self.lines>#self.visibleLines then
+            self.scrollBar:draw(self.x, self.y, self.width, self.height)
+
+    end
 end
 
 function FileVizualizer:drawBorders()
@@ -148,12 +151,12 @@ end
 function FileVizualizer:setRatio()
     local totalLines = #self.lines
     local visibleLinesCount = #self.visibleLines
-    if #self.visibleLines>0 then
+    if #self.visibleLines>0 and #self.lines>#self.visibleLines then
           local firstLineIndex = self.visibleLines[1].index
 
     local scrollRatio = firstLineIndex / totalLines
     local scrollBarHeight = (visibleLinesCount / totalLines) * self.height
-    local scrollBarY = self.y + scrollRatio * self.height
+    local scrollBarY = scrollRatio * self.height
     self.scrollBar:setRatio(scrollRatio, scrollBarHeight, scrollBarY)  
     end
 

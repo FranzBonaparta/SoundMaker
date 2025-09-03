@@ -20,8 +20,12 @@ function UI:new(player)
   self.save = Button(1400, 650, 40, 40, "save")
   self.load = Button(1450, 650, 40, 40, "load")
   self.fileVizualizer = FileVizualizer("SoundMaker", "partitions")
+  --self.partitionExplorer = FileVizualizer("SoundMaker", "partitions")
+--self.instrumentExplorer = FileVizualizer("SoundMaker", "instruments")
   self.fileVizualizer:init()
   self.fileVizualizer.hidden = true
+  --self.partitionExplorer.hidden = not self.showingPartitions
+--self.instrumentExplorer.hidden = self.showingPartitions
   self:initButtons({ self.load, self.save })
   self.input = InputName(50, 50, 400, 200)
   self.input:setText("Entrez le nom de la partition: ")
@@ -159,10 +163,10 @@ function UI:showLoader()
 end
 
 function UI:mousepressed(mx, my, button)
-  if button==1 and #self.piano.partition >0 then
+--[[  if button==1 and #self.piano.partition >0 then
     local lastNote=self.piano.partition[#self.piano.partition]
-    --print(lastNote.note, lastNote.duration)
-  end
+    print(lastNote.note, lastNote.duration)
+  end]]
   self.input:mousepressed(mx, my, button)
   if self.fileVizualizer:isVisible() then
     local name = self.fileVizualizer:mousepressed(mx, my, button)
@@ -237,4 +241,7 @@ function UI:keypressed(key, player)
   end
 end
 
+function UI:wheelmoved(mx,my)
+  self.fileVizualizer:wheelmoved(mx,my)
+end
 return UI

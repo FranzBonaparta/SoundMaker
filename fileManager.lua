@@ -53,7 +53,7 @@ love.filesystem.createDirectory("partitions") -- Create folder if necessary
     love.filesystem.write(path, fileData)
 end
 function FileManager.loadInstrument(name)
-    local chunk = love.filesystem.load("instruments/"..name..".lua")
+    local chunk = love.filesystem.load(name)
     local data = chunk()
     return data.shape, data.attack, data.decay, data.factors, data.amplitudes
 end

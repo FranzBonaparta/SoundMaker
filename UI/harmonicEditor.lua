@@ -220,34 +220,7 @@ function HarmonicEditor:keypressed(key)
   end
   for _, field in ipairs(self.amplitudesFields) do
     field:keypressed(key)
-  end
-  if key == "s" then
-    FileManager.saveInstrument("testPiano", self, 1)
-  end
-  if key == "l" then
-    local shape, attack, decay, factors, amplitudes = FileManager.loadInstrument("testPiano")
-    self.attacks[self.indexChosen] = attack
-    self.attackKnob.value = attack
-    self.decays[self.indexChosen] = decay
-    self.decayKnob.value = decay
-    for _, btn in ipairs(self.shapesButtons) do
-      if btn.text == shape then
-        btn.onClick()
-        break
-      end
-    end
-      self.shapes[self.indexChosen] = shape
-      self.attacks[self.indexChosen] = attack
-      self.attackKnob.value = attack
-      self.decays[self.indexChosen] = decay
-      self.decayKnob.value = decay
-      self.factors[self.indexChosen] = factors
-      self.amplitudes[self.indexChosen] = amplitudes
-
-    self:initializeFields(self.indexChosen) -- 🔁 update all fields
-
-    --print("Loaded instrument:", shape, attack, decay, "#factors=" .. #factors, "#amplitudes=" .. #amplitudes)
-  end
+  end  
 end
 
 return HarmonicEditor

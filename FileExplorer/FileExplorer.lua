@@ -33,12 +33,12 @@ function FileExplorer.getFolders(folder)
     end
     return folders
 end
-function FileExplorer.readContent(fileSearched)
-    local files = love.filesystem.getDirectoryItems("instruments")
+function FileExplorer.readContent(fileSearched, directory)
+    local files = love.filesystem.getDirectoryItems(directory)
     local content, size = "", 0
     for k, file in ipairs(files) do
         if file == fileSearched then
-            content, size = love.filesystem.read("instruments/" .. file)
+            content, size = love.filesystem.read(directory.."/" .. file)
             return content
         end
     end

@@ -3,9 +3,8 @@ local UI = Object:extend()
 local PianoViewer = require("UI.pianoViewer")
 local HarmonicEditor = require("UI.harmonicEditor")
 local Button = require("UI.button")
-local FileManager = require("fileManager")
-local FileVizualizer = require("FileExplorer.FileVizualizer")
-local InputName = require("libs.inputName")
+local InstrumentPanel = require("instrumentPanel")
+local PartitionManager = require("partitionManager")
 --local FrequencySlider=require("UI.frequencySlider")
 function UI:new(player)
   self.piano = PianoViewer(50, 100)
@@ -17,20 +16,8 @@ function UI:new(player)
   self.state = "piano"
   self.stateButton = nil
   self:initializeStateButton()
-  self.save = Button(1400, 650, 40, 40, "save")
-  self.load = Button(1450, 650, 40, 40, "load")
-  self.fileVizualizer = FileVizualizer("SoundMaker", "partitions")
-  --self.partitionExplorer = FileVizualizer("SoundMaker", "partitions")
---self.instrumentExplorer = FileVizualizer("SoundMaker", "instruments")
-  self.fileVizualizer:init()
-  self.fileVizualizer.hidden = true
-  --self.partitionExplorer.hidden = not self.showingPartitions
---self.instrumentExplorer.hidden = self.showingPartitions
-  self:initButtons({ self.load, self.save })
-  self.input = InputName(50, 50, 400, 200)
-  self.input:setText("Entrez le nom de la partition: ")
-  self.canPlay = true
-  self.coolDown = 0
+  self.partitionExplorer = PartitionManager()
+  self.instrumentExplorer = InstrumentPanel()
 end
 
 function UI:initializeStateButton()
@@ -74,25 +61,6 @@ function UI:setInstrumentsButtons()
   end
 end
 
-function UI:initButtons(buttons)
-  for _, button in pairs(buttons) do
-    button:setImmediate()
-    button:setBackgroundColor(125, 125, 125)
-    button:setAngle(5)
-  end
-  self.load:setOnClick(function()
-    self.fileVizualizer:reset()
-    self.fileVizualizer.hidden = false
-    print("loading...")
-  end)
-  self.save:setOnClick(function()
-    print("saving...")
-    self.canPlay = false
-    self.input:show()
-    --FileManager.saveSprite(name, grid, self.palette)
-  end)
-end
-
 function UI:initializeEditor(instrument)
   self.harmonicEditor.indexChosen = instrument.index
   self.harmonicEditor.attackKnob.value = self.harmonicEditor.attacks[instrument.index]
@@ -103,27 +71,9 @@ function UI:initializeEditor(instrument)
 end
 
 function UI:update(dt)
-  if self.fileVizualizer:isVisible() then
-    self.fileVizualizer:update()
-    self.coolDown = 1
-    return
-  end
-  self.input:update(dt)
-  if self.input:consumeValidation() then
-    print("Sauvegarde déclenchée :", self.input.name)
-
-    FileManager.savePartition(self.input.name, self.piano)
-    self.input.name = ""
-    self.coolDown = 1
-    return
-  end
-  if not self.fileVizualizer:isVisible() and not self.input:isVisible() then
-    self.coolDown = math.max(0, self.coolDown - dt)
-    if self.coolDown <= 0 then
-      self.canPlay = true
-    end
-  end
-  if self.state == "piano" and self.canPlay then
+  self.partitionExplorer:update(dt, self.piano)
+  self.instrumentExplorer:update(dt,self.harmonicEditor)
+  if self.state == "piano" and self.partitionExplorer.canPlay then
     --highlight notes played on reading partition -> see simpleMusicPlayer:update
     self.piano:update(dt)
   else
@@ -132,7 +82,7 @@ function UI:update(dt)
 end
 
 function UI:draw()
-      love.graphics.setColor(1, 1, 1)
+  love.graphics.setColor(1, 1, 1)
   if self.state == "piano" then
     self.piano:draw()
     for _, instr in ipairs(self.instruments) do
@@ -142,55 +92,15 @@ function UI:draw()
     self.harmonicEditor:draw(self.instrumentIndex)
   end
   self.stateButton:draw()
-  self.save:draw()
-  self.load:draw()
-      love.graphics.setColor(1, 1, 1)
-  if self.input:isVisible() then
-    self.input:draw()
-  end
-    if self.fileVizualizer:isVisible() then
-        self.fileVizualizer:draw()
-    end
-end
-
-function UI:saveFile()
-  self.save.onClick()
-end
-
-function UI:showLoader()
-  self.canPlay = false
-  --self.load.onClick()
+  self.partitionExplorer:draw()
+  self.instrumentExplorer:draw()
 end
 
 function UI:mousepressed(mx, my, button)
---[[  if button==1 and #self.piano.partition >0 then
-    local lastNote=self.piano.partition[#self.piano.partition]
-    print(lastNote.note, lastNote.duration)
-  end]]
-  self.input:mousepressed(mx, my, button)
-  if self.fileVizualizer:isVisible() then
-    local name = self.fileVizualizer:mousepressed(mx, my, button)
-    if name then
-      local chunk=FileManager.loadPartition(name)
-      self.piano:initText()
-      self.piano.partition={}
-      for i, value in ipairs(chunk) do
-  table.insert(self.piano.partition, { note = value.note, duration = value.duration })
-  table.insert(self.piano.partitionText,tostring(value.name))
-      end
-        self.piano:updateText()
-
-      self.fileVizualizer.hidden = true
-      return
-    end
-  elseif not self.fileVizualizer:isVisible() and not self.input:isVisible() then
+  local bool = self.partitionExplorer:mousepressed(mx, my, button, self.piano, self.state)
+  if bool and self.partitionExplorer.canPlay then
     if self.state == "piano" then
-       self.save:mousepressed(mx, my, button)
-    if self.load:isHovered(mx, my) then
-      self:showLoader()
-      self.load:mousepressed(mx,my, button)
-    end
-    local instrument = self.harmonicEditor
+      local instrument = self.harmonicEditor
       self.piano:mousepressed(mx, my, button, instrument)
       for _, instr in ipairs(self.instruments) do
         if button == 1 and instr:isHovered(mx, my) then
@@ -201,10 +111,10 @@ function UI:mousepressed(mx, my, button)
         end
       end
     else
+      self.instrumentExplorer:mousepressed(mx,my,button,self.harmonicEditor,self.state)
       self.harmonicEditor:mousepressed(mx, my, button)
     end
     self.stateButton:mousepressed(mx, my, button)
-   
   end
 end
 
@@ -215,9 +125,9 @@ function UI:mousereleased(mx, my, button)
 end
 
 function UI:keypressed(key, player)
-  if self.input:isVisible() then
-    self.input:keypressed(key)
-  else
+  local bool = self.partitionExplorer:keypressed(key)
+  local bool2 = self.instrumentExplorer:keypressed(key)
+  if not bool and not bool2 then
     if self.state == "piano" then
       player:keypressed(key)
       if key == "tab" and #self.piano.partition > 0 then
@@ -241,7 +151,9 @@ function UI:keypressed(key, player)
   end
 end
 
-function UI:wheelmoved(mx,my)
-  self.fileVizualizer:wheelmoved(mx,my)
+function UI:wheelmoved(mx, my)
+  self.partitionExplorer:wheelmoved(mx, my)
+  self.instrumentExplorer:wheelmoved(mx,my)
 end
+
 return UI

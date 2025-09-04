@@ -92,12 +92,14 @@ function HarmonicEditor:initializeFields(index)
       local field = InputField("numeric")
       field:setCoords(self.x, diffY + (i * 20), 50)
       field:setPlaceholder(factor)
+      field:setColor({255,255,255})
       table.insert(self.factorsFields, field)
     end
     for i, amplitude in ipairs(self.amplitudes[index]) do
       --create a new field
       local field = InputField("float")
       field:setCoords(diffX, diffY + (i * 20), 50)
+      field:setColor({255,255,255})
       field:setPlaceholder(tonumber(string.format("%.3f", amplitude)))
       table.insert(self.amplitudesFields, field)
     end
@@ -125,7 +127,11 @@ function HarmonicEditor:addHarmonic()
       local diffX, diffY = self.x + 90, self.y + 90
       local newIndex = size + 1
       factorField:setCoords(self.x, diffY + (newIndex * 20), 50)
+      factorField:setColor({255,255,255})
+
       amplitudeField:setCoords(diffX, diffY + (newIndex * 20), 50)
+      amplitudeField:setColor({255,255,255})
+
       local shapes = { "sine", "square", "triangle", "saw" }
       local newFactors = { lastFactor + 1, lastFactor + 2, lastFactor + 2, lastFactor + 1 }
       local newAmplitudes = { (1 - (0.2 * lastFactor)), 1 / (lastFactor + 2), 1 / ((lastFactor + 2) ^ 2), (1 / (lastFactor + 1)) *

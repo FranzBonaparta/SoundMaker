@@ -1,6 +1,6 @@
 local ItemManager = require("Managers.itemManager")
 local PartitionManager = ItemManager:extend()
-local FileManager = require("fileManager")
+local FileManager = require("Data.fileManager")
 
 function PartitionManager:new()
   ItemManager.new(self)

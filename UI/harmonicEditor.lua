@@ -3,7 +3,7 @@ local HarmonicEditor = Object:extend()
 local Knob = require("UI.knob")
 local Button = require("UI.button")
 local InputField = require("libs.inputField")
-local FileManager = require("fileManager")
+local FileManager = require("Data.fileManager")
 
 function HarmonicEditor:new(x, y, instrumentsAmount)
   self.x = x

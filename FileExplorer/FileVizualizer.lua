@@ -107,9 +107,8 @@ function FileVizualizer:draw()
             file:draw()
         end
     end
-    if #self.lines>#self.visibleLines then
-            self.scrollBar:draw(self.x, self.y, self.width, self.height)
-
+    if #self.lines > #self.visibleLines then
+        self.scrollBar:draw(self.x, self.y, self.width, self.height)
     end
 end
 
@@ -133,14 +132,21 @@ function FileVizualizer:mouseHoverBorders(mx, my)
 end
 
 function FileVizualizer:mousepressed(mx, my, button)
-    if button == 1 then
-        if self:mouseHoverBorders(mx, my) then
-            self.hidden = true
-        else
-            for _, line in ipairs(self.lines) do
-                for _, item in ipairs(line) do
-                    if item:isHovered(mx, my) then
-                        return item:onClick()
+    if self:mouseHoverBorders(mx, my) then
+        self.hidden = true
+    end
+    for _, line in ipairs(self.lines) do
+        for _, item in ipairs(line) do
+            if item:isHovered(mx, my) then
+                if button == 1 then
+                    return item:onClick()
+                    --erase a file
+                elseif button == 3 then
+                    local filePath = self.path .. "/" .. item.name
+                    if love.filesystem.getInfo(filePath) then
+                        love.filesystem.remove(self.path .. "/" .. item.name)
+                        --reset in order to refresh the print of files
+                        return self:reset()
                     end
                 end
             end
@@ -151,15 +157,14 @@ end
 function FileVizualizer:setRatio()
     local totalLines = #self.lines
     local visibleLinesCount = #self.visibleLines
-    if #self.visibleLines>0 and #self.lines>#self.visibleLines then
-          local firstLineIndex = self.visibleLines[1].index
+    if #self.visibleLines > 0 and #self.lines > #self.visibleLines then
+        local firstLineIndex = self.visibleLines[1].index
 
-    local scrollRatio = firstLineIndex / totalLines
-    local scrollBarHeight = (visibleLinesCount / totalLines) * self.height
-    local scrollBarY = scrollRatio * self.height
-    self.scrollBar:setRatio(scrollRatio, scrollBarHeight, scrollBarY)  
+        local scrollRatio = firstLineIndex / totalLines
+        local scrollBarHeight = (visibleLinesCount / totalLines) * self.height
+        local scrollBarY = scrollRatio * self.height
+        self.scrollBar:setRatio(scrollRatio, scrollBarHeight, scrollBarY)
     end
-
 end
 
 function FileVizualizer:wheelmoved(mx, my)

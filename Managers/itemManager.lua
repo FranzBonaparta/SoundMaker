@@ -32,7 +32,7 @@ function ItemManager:initButtons(buttons)
     print("loading...")
   end)
   self.save:setOnClick(function()
-    print("saving...")
+    --print("saving...")
     self.canPlay = false
     self.input:show()
   end)

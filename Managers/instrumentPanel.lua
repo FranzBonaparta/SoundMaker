@@ -7,6 +7,8 @@ function InstrumentPanel:new()
   ItemManager.initButtons(self, { self.save, self.load })
   ItemManager.initVizualizer(self, "instruments")
   self.input:setText("Entrez le nom de l'instrument': ")
+  self.input.inputField:setType("alphanumeric")
+
 end
 
 function InstrumentPanel:update(dt,harmonicEditor)

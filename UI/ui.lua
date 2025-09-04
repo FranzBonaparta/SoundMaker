@@ -127,7 +127,10 @@ end
 function UI:keypressed(key, player)
   local bool = self.partitionExplorer:keypressed(key)
   local bool2 = self.instrumentExplorer:keypressed(key)
-  if not bool and not bool2 then
+  --test if no one explorer is opened
+  if not bool and not bool2  
+  and self.partitionExplorer.canPlay 
+  and self.instrumentExplorer.canPlay then
     if self.state == "piano" then
       player:keypressed(key)
       if key == "tab" and #self.piano.partition > 0 then

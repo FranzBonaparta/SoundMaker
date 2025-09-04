@@ -92,6 +92,8 @@ function InputField:textinput(t)
         isValid = potentialText:match("^%d*$") ~= nil
     elseif self.type == "alphabetic" then
         isValid = potentialText:match("^%a*$") ~= nil
+    elseif self.type=="alphanumeric" then
+        isValid = potentialText:match("^[%w_%-]*$") ~= nil
     end
 
     -- If the final string is valid, insert it
@@ -113,9 +115,11 @@ function InputField:filterInput(t)
         end
         return string.match(t, "[%d%.%-]") or "" -- Allow digits and one dot
     elseif self.type == "numeric" then
-        return string.match(t, "[%d]") or ""   -- Allow digits and one dot
+        return string.match(t, "[%d]") or ""   -- Allow digits
     elseif self.type == "alphabetic" then
         return string.match(t, "[%D]") or ""   -- Allow non-digit characters only
+    elseif self.type=="alphanumeric" then
+        return string.match(t, "[%w_%-]")
     else
         return t                               -- Default: allow all characters
     end
@@ -157,6 +161,9 @@ function InputField:keypressed(key)
         self:textinput(".")
     elseif key == "kp-" then
         self:textinput("-")
+    elseif key== "rshift"
+    or key=="lshift"or key=="rctrl"or key=="lctrl"or key=="ralt" or key=="lalt"  then
+        self:textinput("")
     else 
         self:textinput(key)
     end

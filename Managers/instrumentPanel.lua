@@ -1,4 +1,4 @@
-local ItemManager = require("itemManager")
+local ItemManager = require("Managers.itemManager")
 local InstrumentPanel = ItemManager:extend()
 local FileManager = require("fileManager")
 

@@ -1,4 +1,4 @@
-local ItemManager = require("itemManager")
+local ItemManager = require("Managers.itemManager")
 local PartitionManager = ItemManager:extend()
 local FileManager = require("fileManager")
 

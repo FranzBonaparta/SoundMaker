@@ -6,6 +6,8 @@ function PartitionManager:new()
   ItemManager.new(self)
   ItemManager.initButtons(self, { self.save, self.load })
   ItemManager.initVizualizer(self, "partitions")
+  self.input:setText("Entrez le nom de la partition: ")
+
 end
 
 function PartitionManager:update(dt, piano)

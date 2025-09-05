@@ -94,6 +94,10 @@ function PianoViewer:updateText()
 end
 
 function PianoViewer:highlightNote(note, duration)
+    if note == 0 then
+    self.restTouche:highlight(duration)
+    return
+  end
   for _, key in ipairs(self.whiteTouches) do
     if key.note == note then
       key:highlight(duration)
@@ -106,9 +110,7 @@ function PianoViewer:highlightNote(note, duration)
       return
     end
   end
-  if note == 0 then
-    self.restTouche:highlight(duration)
-  end
+
 end
 
 function PianoViewer:playPartition(simpleMusicPlayer, instrument)

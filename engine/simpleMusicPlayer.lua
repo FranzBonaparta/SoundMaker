@@ -52,7 +52,7 @@ function SimpleMusicPlayer:update(dt, onNotePlayed)
         local noteData = self.currentMelody[self.currentIndex]
         if noteData then
             --check if the note is silence
-            if noteData.note ~= 0 then
+            if noteData.note  then
                 local sound = self.instrument(noteData.note, noteData.duration, 0.3)
                 sound:play()
                 -- 🔔 signals notes played on pianoViewer

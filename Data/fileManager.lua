@@ -42,11 +42,13 @@ function FileManager.savePartition(name, pianoViewer)
     for i, prt in ipairs(partition) do
         local index = i
         fileData = fileData .. "{ note = " .. prt.note .. ",\n"
-        if not partitionButton[table][i] then
+        if not partitionButton[table][i] and table< #partitionButton then
             table = table + 1
             index = 1
         end
-        fileData = fileData .. string.format("name = %q", partitionButton[table][index].text) .. ",\n"
+        if partitionButton[table] and partitionButton[table][index] then
+            fileData = fileData .. string.format("name = %q", partitionButton[table][index].text) .. ",\n"
+        end
         fileData = fileData .. "duration = " .. prt.duration .. "}"
         if i < #partition then
             fileData = fileData .. ","

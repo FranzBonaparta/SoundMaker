@@ -2,10 +2,10 @@ local Object=require("libs.classic")
 local Button=require("UI.button")
 local NoteButton=Object:extend()
 
-function NoteButton:new(x,text,duration, note,index)
+function NoteButton:new(x,y,text,duration, note,index)
   self.index=index
-    self.x=x+(self.index*50)
-self.y=500
+    self.x=x*50
+self.y=y
   --self.mainButton=Button(newX,y,50,30,text)
   self.text=text
   self.decreaseDuration=Button(self.x,self.y+30,25,20,"-")

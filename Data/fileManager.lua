@@ -37,9 +37,15 @@ function FileManager.savePartition(name,pianoViewer)
     local partition=pianoViewer.partition
     local partitionButton=pianoViewer.partitionButtons
     fileData=fileData.."partition = {\n"
+    local table=1
     for i, prt in ipairs(partition)do
+        local index=i
         fileData=fileData.."{ note = "..prt.note..",\n"
-        fileData=fileData..string.format("name = %q",partitionButton[i].text)..",\n"
+        if not partitionButton[table][i] then
+            table=table+1
+            index=1
+        end
+        fileData=fileData..string.format("name = %q",partitionButton[table][index].text)..",\n"
         fileData=fileData.."duration = "..prt.duration.."}"
         if i<#partition then
             fileData=fileData..","

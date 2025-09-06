@@ -69,9 +69,14 @@ function SimpleMusicPlayer:update(dt, partitionButtons, onNotePlayed)
             end
 
             self.timer = noteData.duration
-            if partitionButtons[self.currentIndex] then
-                partitionButtons[self.currentIndex]:highlight(self.currentIndex)
+            for _, table in ipairs(partitionButtons) do
+                for _, btn in ipairs(table) do
+                    if btn.index==self.currentIndex then
+                        btn:highlight(self.currentIndex)
+                    end
+                end
             end
+ 
             self.currentIndex = self.currentIndex + 1
         else
             self.isPlaying = false -- End of the melody

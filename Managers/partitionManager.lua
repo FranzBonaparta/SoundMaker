@@ -1,6 +1,7 @@
 local ItemManager = require("Managers.itemManager")
 local PartitionManager = ItemManager:extend()
 local FileManager = require("Data.fileManager")
+local NoteButton=require("noteButton")
 
 function PartitionManager:new()
   ItemManager.new(self)
@@ -32,14 +33,11 @@ function PartitionManager:mousepressed(mx, my, button, piano, state)
     local name = self.fileVizualizer:mousepressed(mx, my, button)
     if name then
       local chunk = FileManager.loadPartition(name)
-      piano:initText()
       piano.partition = {}
       for i, value in ipairs(chunk) do
         table.insert(piano.partition, { note = value.note, duration = value.duration })
-        table.insert(piano.partitionText, tostring(value.name))
+        table.insert(piano.partitionButtons, NoteButton(i,tostring(value.name),value.duration,value.note,i))
       end
-      piano:updateText()
-
       self.fileVizualizer.hidden = true
       return self.fileVizualizer.hidden
     end

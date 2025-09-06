@@ -17,6 +17,7 @@ function Button:new(x, y, width, height, text, f, angle)
     self.image = nil
     self.canReleased = true
     self.backgroundColor={0,0,0}
+    self.textColor={0,0,0}
     self.angle=angle or 0
     self.toRemove=false
     self.locked=false
@@ -60,6 +61,11 @@ function Button:setBackgroundColor(r, g, b, a)
     r, g, b = love.math.colorFromBytes(r, g, b)
     self.backgroundColor = { r, g, b, a }
 end
+function Button:setTextColor(r, g, b, a)
+    r, g, b = love.math.colorFromBytes(r, g, b)
+    a=a or 0
+    self.textColor = { r, g, b, a }
+end
 function Button:setTooltip(text, delay, position)
     self.tooltip=Tooltip(text,self,delay,position)
 end
@@ -87,7 +93,7 @@ function Button:draw()
         love.graphics.draw(self.image, imgX, imgY, 0, scaleX, scaleY)
     end
     --center text above
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(self.textColor[1], self.textColor[2], self.textColor[3], self.textColor[4])
     love.graphics.printf(
         self.text,
         self.x,

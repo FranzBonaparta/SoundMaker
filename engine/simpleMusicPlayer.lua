@@ -43,7 +43,7 @@ function SimpleMusicPlayer:playMelody(melody, instrument)
     self.instrument = instrument or self.defaultInstrument
 end
 
-function SimpleMusicPlayer:update(dt, onNotePlayed)
+function SimpleMusicPlayer:update(dt, partitionButtons, onNotePlayed)
     if not self.isPlaying or not self.currentMelody then return end
 
     self.timer = self.timer - dt
@@ -54,7 +54,7 @@ function SimpleMusicPlayer:update(dt, onNotePlayed)
             --check if the note is silence
             if noteData.note then
                 if noteData.note == 0 then
-                    -- silence : jouer aucun son, mais déclencher highlight
+                    -- silence : don't play sound, but trigger highlight
                     if onNotePlayed then
                         onNotePlayed(0, noteData.duration)
                     end
@@ -69,6 +69,9 @@ function SimpleMusicPlayer:update(dt, onNotePlayed)
             end
 
             self.timer = noteData.duration
+            if partitionButtons[self.currentIndex] then
+                partitionButtons[self.currentIndex]:highlight(self.currentIndex)
+            end
             self.currentIndex = self.currentIndex + 1
         else
             self.isPlaying = false -- End of the melody

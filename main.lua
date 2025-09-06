@@ -22,9 +22,11 @@ function love.update(dt)
     -- Used for fluid movements
     if ui.state == "piano" and ui.player then
         --highlight notes from melody played
-        ui.player:update(dt, function(note, duration)
+        ui.player:update(dt,ui.piano.partitionButtons, function(note, duration)
             ui.piano:highlightNote(note, duration)
+            --ui.piano:highlightNoteButton(note)
         end)
+        ui.piano:highlightNoteButton()
     end
     ui:update(dt)
 end

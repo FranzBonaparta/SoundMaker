@@ -138,14 +138,12 @@ function UI:keypressed(key, player)
       end
       if key == "delete" then
         self.piano.partition = {}
-        self.piano.partitionText = { "Partition jouée:\n" }
-        self.piano:updateText()
+        self.piano.partitionButtons={}
       end
       if key == "backspace" then
         if #self.piano.partition >= 1 then
           table.remove(self.piano.partition, #self.piano.partition)
-          table.remove(self.piano.partitionText, #self.piano.partitionText)
-          self.piano:updateText()
+          table.remove(self.piano.partitionButtons, #self.piano.partitionButtons)
         end
       end
     elseif self.state == "harmonic" then

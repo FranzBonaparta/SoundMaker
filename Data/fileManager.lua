@@ -35,11 +35,11 @@ function FileManager.savePartition(name,pianoViewer)
         local path = "partitions/" .. name .. ".lua"
     local fileData = "return {\n"
     local partition=pianoViewer.partition
-    local partitionText=pianoViewer.partitionText
+    local partitionButton=pianoViewer.partitionButtons
     fileData=fileData.."partition = {\n"
     for i, prt in ipairs(partition)do
         fileData=fileData.."{ note = "..prt.note..",\n"
-        fileData=fileData..string.format("name = %q",partitionText[i+1])..",\n"
+        fileData=fileData..string.format("name = %q",partitionButton[i].text)..",\n"
         fileData=fileData.."duration = "..prt.duration.."}"
         if i<#partition then
             fileData=fileData..","

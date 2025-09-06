@@ -36,18 +36,18 @@ function FileManager.savePartition(name, pianoViewer)
     local path = "partitions/" .. name .. ".lua"
     local fileData = "return {\n"
     local partition = pianoViewer.partition
-    local partitionButton = pianoViewer.partitionButtons
+    local partitionButtons = pianoViewer.partitionButtons
     fileData = fileData .. "partition = {\n"
-    local table = 1
+
     for i, prt in ipairs(partition) do
-        local index = i
+        local row = math.floor((i - 1) / 25) + 1
+        local col = ((i - 1) % 25) + 1
+        local btn = partitionButtons[row] and partitionButtons[row][col]
         fileData = fileData .. "{ note = " .. prt.note .. ",\n"
-        if not partitionButton[table][i] and table< #partitionButton then
-            table = table + 1
-            index = 1
-        end
-        if partitionButton[table] and partitionButton[table][index] then
-            fileData = fileData .. string.format("name = %q", partitionButton[table][index].text) .. ",\n"
+        if btn then
+            fileData = fileData .. string.format("name = %q,\n", btn.text)
+        else
+            fileData = fileData .. "name = \"?\",\n" -- fallback
         end
         fileData = fileData .. "duration = " .. prt.duration .. "}"
         if i < #partition then
@@ -55,8 +55,8 @@ function FileManager.savePartition(name, pianoViewer)
         end
         fileData = fileData .. "\n"
     end
-    fileData = fileData .. "}\n"
 
+    fileData = fileData .. "}\n"
     fileData = fileData .. "}"
     love.filesystem.createDirectory("partitions") -- Create folder if necessary
     love.filesystem.write(path, fileData)

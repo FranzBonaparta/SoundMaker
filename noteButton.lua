@@ -7,7 +7,7 @@ function NoteButton:new(x, y, text, duration, note, index)
   self.x = x * 50
   self.y = y
   --self.mainButton=Button(newX,y,50,30,text)
-  self.text = text
+  self.text = text or "_ _"
   self.decreaseDuration = Button(self.x, self.y + 30, 25, 20, "-")
   self.addDuration = Button(self.x + 25, self.y + 30, 25, 20, "+")
   self.note = note

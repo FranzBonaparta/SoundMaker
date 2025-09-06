@@ -164,6 +164,8 @@ function InputField:keypressed(key)
     elseif key== "rshift"
     or key=="lshift"or key=="rctrl"or key=="lctrl"or key=="ralt" or key=="lalt"  then
         self:textinput("")
+    elseif key=="space" then
+        self:textinput("_")
     else 
         self:textinput(key)
     end

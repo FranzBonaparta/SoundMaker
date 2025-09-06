@@ -34,9 +34,11 @@ function PartitionManager:mousepressed(mx, my, button, piano, state)
     if name then
       local chunk = FileManager.loadPartition(name)
       piano.partition = {}
+      piano.partitionButtons={{}}
       for i, value in ipairs(chunk) do
-        table.insert(piano.partition, { note = value.note, duration = value.duration })
-        table.insert(piano.partitionButtons, NoteButton(i,tostring(value.name),value.duration,value.note,i))
+        piano:updatePartition(value,value.duration)
+        --[[table.insert(piano.partition, { note = value.note, duration = value.duration })
+        table.insert(piano.partitionButtons, NoteButton(i,tostring(value.name),value.duration,value.note,i))]]
       end
       self.fileVizualizer.hidden = true
       return self.fileVizualizer.hidden
@@ -48,7 +50,7 @@ function PartitionManager:mousepressed(mx, my, button, piano, state)
         self:showLoader()
         self.load:mousepressed(mx, my, button)
       end
-    end
+    end 
   end
   return self.fileVizualizer.hidden
 end

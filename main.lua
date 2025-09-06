@@ -24,9 +24,9 @@ function love.update(dt)
         --highlight notes from melody played
         ui.player:update(dt,ui.piano.partitionButtons, function(note, duration)
             ui.piano:highlightNote(note, duration)
-            --ui.piano:highlightNoteButton(note)
+            ui.piano:highlightNoteButton(ui.player.currentIndex)
         end)
-        ui.piano:highlightNoteButton()
+        --ui.piano:highlightNoteButton(ui.player.currentIndex)
     end
     ui:update(dt)
 end

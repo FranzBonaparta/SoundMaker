@@ -1,8 +1,5 @@
 .vscode/
 SoundMaker.love
-build/*.dll
-build/*.md
-build/*.exe
-build/*.txt
+build/
 tools/
 tools/love-11.5-win32/

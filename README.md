@@ -71,7 +71,7 @@ It allows you to play notes on a virtual keyboard, modify their sound parameters
 cd SoundMaker
 love .</code>
 
-- One zip file, for windows is available on build/windows/
+- One zip file, for windows is available
 
 - 🎉 Play some music!
 

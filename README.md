@@ -9,12 +9,20 @@ Created by **Jojopov**
 ## 📷 Screenshots
 
 <p align="center">
-  <img src="./pictures/screenshot1.png" alt="Main interface" width="400"/>
-  <img src="./pictures/screenshot2.png" alt="Playing notes" width="400"/>
+  <img src="./pictures/screenshot3.png" alt="Main interface" width="400"/>
+  <img src="./pictures/screenshot4.png" alt="Edit instrument" width="400"/>
+    <img src="./pictures/screenshot5.png" alt="Save partition" width="400"/>
+  <img src="./pictures/screenshot6.png" alt="Load partition" width="400"/>
+
 </p>
 
 **SoundMaker** is a small interactive synthesizer developed in Love2D.
 It allows you to play notes on a virtual keyboard, modify their sound parameters, and even record/replay melodies.
+
+## 📦 Last updates
+
+- Implementation of note's button on partition which allowed you to edit eaxh note's duration.
+- Load and Save function for instrument and partition.
 
 ## ✨ Features
 
@@ -24,7 +32,7 @@ It allows you to play notes on a virtual keyboard, modify their sound parameters
 
 - 🔊 Waveform selection (square, sine, etc.).
 
-- 📝 Recordable score → replay your melodies.
+- 📝 Recordable score → replay your melodies and edit all note's played duration.
 
 - 🎶 Visual highlighting of played notes.
 
@@ -41,6 +49,7 @@ It allows you to play notes on a virtual keyboard, modify their sound parameters
 - **Tab** – Play the current partition
 - **Delete** – Clear the entire partition
 - **Backspace** – Remove the last note from the partition
+- **Right Click** - On each note ("+" or "-" button) from the partition to edit the note's duration
 
 🎧 Programmatic Sounds:
 

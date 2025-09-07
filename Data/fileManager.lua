@@ -1,3 +1,8 @@
+-- SoundMaker
+-- Made by Jojopov
+-- Licence : GNU GPL v3 - 2025
+-- https://www.gnu.org/licenses/gpl-3.0.html
+-- FileManager allowed you to load and save datas
 local FileManager = {}
 function FileManager.saveInstrument(name, harmonicEditor, index)
     local path = "instruments/" .. name .. ".lua"

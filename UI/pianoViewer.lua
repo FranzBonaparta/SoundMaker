@@ -7,7 +7,7 @@ local width, whiteHeight, blackHeight = 25, 100, 50
 local Notes = require("assets.notes")
 local whiteNotes = Notes.whiteNotesName
 local blackNotes = Notes.blackNotesName
-local NoteButton = require("noteButton")
+local NoteButton = require("UI.noteButton")
 function PianoViewer:new(x, y)
   self.x = x
   self.y = y

@@ -1,3 +1,8 @@
+-- Tooltip
+-- Made by Jojopov
+-- Licence : GNU GPL v3 - 2025
+-- https://www.gnu.org/licenses/gpl-3.0.html
+-- Tooltip is a component designed to print tooltips
 local Object = require("libs.classic")
 
 local Tooltip = Object:extend()

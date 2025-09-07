@@ -1,3 +1,9 @@
+-- Button
+-- Made by Jojopov
+-- Licence : GNU GPL v3 - 2025
+-- https://www.gnu.org/licenses/gpl-3.0.html
+-- Button is a component which define a button
+
 local Object = require("libs.classic")
 
 local Button = Object:extend()

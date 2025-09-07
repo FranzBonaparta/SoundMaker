@@ -1,3 +1,8 @@
+-- Draws - from RetroSpriteMaker
+-- Made by Jojopov
+-- Licence : GNU GPL v3 - 2025
+-- https://www.gnu.org/licenses/gpl-3.0.html
+-- Draws is a component which print draws and define colors
 local Draws = {}
 local function convertColor(color)
     return color[1] / 255, color[2] / 255, color[3] / 255

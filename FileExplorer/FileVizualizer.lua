@@ -55,9 +55,9 @@ function FileVizualizer:dispatchToLines()
     self.lines = {}
 
     local filesPerRow = math.floor(self.width / (self.offset + 64)) -- 64 = largeur de ton Draws.file + marge
-    for _, folder in ipairs(self.folders) do
+    --[[for _, folder in ipairs(self.folders) do
         self:insertItem(folder)
-    end
+    end]]
     for i, file in ipairs(self.files) do
         self:insertItem(file)
     end

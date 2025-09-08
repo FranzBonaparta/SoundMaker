@@ -1,7 +1,6 @@
 local ItemManager = require("Managers.itemManager")
 local PartitionManager = ItemManager:extend()
 local FileManager = require("Data.fileManager")
-local NoteButton=require("UI.noteButton")
 
 function PartitionManager:new()
   ItemManager.new(self)

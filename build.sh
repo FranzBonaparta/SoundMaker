@@ -3,7 +3,7 @@
 set -e  # Stop on error
 
 echo "🔧 Creating RSoundMaker.love..."
-zip -9 -r SoundMaker.love . -x ".git*" "*.DS_Store" "*~" "tools/*" "build/*"
+zip -9 -r SoundMaker.love . -x ".git*" "*.DS_Store" "*~" "tools/*" "build/*" ".vscode/" "pictures/"
 
 # Create Windows folder
 echo "📁 Creating build directory..."

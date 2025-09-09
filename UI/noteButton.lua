@@ -32,7 +32,12 @@ function NoteButton:setBackgroundColor()
   self.addDuration:setBackgroundColor({ r, g, b })
   self.decreaseDuration:setBackgroundColor({ r, g, b })
 end
-
+function NoteButton:setCoords(x,y)
+  self.x=x*50
+  self.y=y
+  self.decreaseDuration.x,self.addDuration.x=self.x,self.x+25
+  self.decreaseDuration.y,self.addDuration.y=self.y+30,self.y+30
+end
 function NoteButton:draw()
   local r, g, b = self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3]
   r, g, b = love.math.colorFromBytes(r, g, b)

@@ -43,22 +43,18 @@ function FileManager.savePartition(name, pianoViewer)
     local partition = pianoViewer.partitionVizualizer.partition
     local partitionButtons = pianoViewer.partitionVizualizer.partitionButtons
     fileData = fileData .. "partition = {\n"
-
-    for i, prt in ipairs(partition) do
-        local row = math.floor((i - 1) / 25) + 1
-        local col = ((i - 1) % 25) + 1
-        local btn = partitionButtons[row] and partitionButtons[row][col]
-        fileData = fileData .. "{ note = " .. prt.note .. ",\n"
-        if btn then
-            fileData = fileData .. string.format("name = %q,\n", btn.text)
-        else
-            fileData = fileData .. "name = \"?\",\n" -- fallback
+    local i = 1
+    for _, line in ipairs(partitionButtons) do
+        for _, noteButton in ipairs(line) do
+            fileData = fileData .. "{ note = " .. noteButton.note .. ",\n"
+            fileData = fileData .. string.format("name = %q,\n", noteButton.text)
+            fileData = fileData .. "duration = " .. noteButton.duration .. "}"
+            i = i + 1
+            if i <= #partition then
+                fileData = fileData .. ","
+            end
+            fileData = fileData .. "\n"
         end
-        fileData = fileData .. "duration = " .. prt.duration .. "}"
-        if i < #partition then
-            fileData = fileData .. ","
-        end
-        fileData = fileData .. "\n"
     end
 
     fileData = fileData .. "}\n"

@@ -5,14 +5,14 @@ local width, whiteHeight, blackHeight = 25, 100, 50
 local Notes = require("assets.notes")
 local whiteNotes = Notes.whiteNotesName
 local blackNotes = Notes.blackNotesName
-local PartitionVizualizer=require("partitionVizualizer")
+local PartitionVizualizer = require("UI.partitionVizualizer")
+
 function PianoViewer:new(x, y)
   self.x = x
   self.y = y
   self.whiteTouches = {}
   self.blackTouches = {}
   self.partitionVizualizer = PartitionVizualizer()
-  
   self.restTouche = {}
   for w = 1, 52 do
     local whiteKey = PianoKey("white", x, y, width, whiteHeight)
@@ -65,7 +65,6 @@ function PianoViewer:draw()
   self.partitionVizualizer:draw()
 end
 
-
 function PianoViewer:highlightNote(note, duration)
   if note == 0 then
     self.restTouche:highlight(duration)
@@ -103,7 +102,6 @@ function PianoViewer:mousepressed(mx, my, button, instrument)
         self.partitionVizualizer:updatePartition(value, duration)
         value:play(duration, instrument)
         --print(value.note)
-
         return
       end
       value:mousepressed(mx, my, button)
@@ -114,7 +112,7 @@ function PianoViewer:mousepressed(mx, my, button, instrument)
       return
     end
   end
-   self.partitionVizualizer:mousepressed(mx,my,button)
+  self.partitionVizualizer:mousepressed(mx, my, button)
 end
 
 function PianoViewer:mousereleased(mx, my, button)
@@ -134,7 +132,6 @@ function PianoViewer:update(dt)
     value:update(dt)
   end
   self.restTouche:update(dt)
-
   self.partitionVizualizer:update(dt)
 end
 

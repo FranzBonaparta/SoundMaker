@@ -40,8 +40,8 @@ end
 function FileManager.savePartition(name, pianoViewer)
     local path = "partitions/" .. name .. ".lua"
     local fileData = "return {\n"
-    local partition = pianoViewer.partition
-    local partitionButtons = pianoViewer.partitionButtons
+    local partition = pianoViewer.partitionVizualizer.partition
+    local partitionButtons = pianoViewer.partitionVizualizer.partitionButtons
     fileData = fileData .. "partition = {\n"
 
     for i, prt in ipairs(partition) do

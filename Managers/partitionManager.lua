@@ -32,10 +32,10 @@ function PartitionManager:mousepressed(mx, my, button, piano, state)
     local name = self.fileVizualizer:mousepressed(mx, my, button)
     if name then
       local chunk = FileManager.loadPartition(name)
-      piano.partition = {}
-      piano.partitionButtons={{}}
+      piano.partitionVizualizer.partition = {}
+      piano.partitionVizualizer.partitionButtons={{}}
       for i, value in ipairs(chunk) do
-        piano:updatePartition(value,value.duration)
+        piano.partitionVizualizer:updatePartition(value,value.duration)
         --[[table.insert(piano.partition, { note = value.note, duration = value.duration })
         table.insert(piano.partitionButtons, NoteButton(i,tostring(value.name),value.duration,value.note,i))]]
       end

@@ -133,21 +133,21 @@ function UI:keypressed(key, player)
   and self.instrumentExplorer.canPlay then
     if self.state == "piano" then
       player:keypressed(key)
-      if key == "tab" and #self.piano.partition > 0 then
-        self.piano:playPartition(player, self.harmonicEditor)
+      if key == "tab" and #self.piano.partitionVizualizer.partition > 0 then
+        self.piano.partitionVizualizer:playPartition(player, self.harmonicEditor)
       end
       if key == "delete" then
-        self.piano.partition = {}
-        self.piano.partitionButtons={{}}
+        self.piano.partitionVizualizer.partition = {}
+        self.piano.partitionVizualizer.partitionButtons={{}}
       end
       if key == "backspace" then
-        if #self.piano.partition >= 1 then
-          table.remove(self.piano.partition, #self.piano.partition)
-          local lastPartitionTable=self.piano.partitionButtons[#self.piano.partitionButtons]
+        if #self.piano.partitionVizualizer.partition >= 1 then
+          table.remove(self.piano.partitionVizualizer.partition, #self.piano.partitionVizualizer.partition)
+          local lastPartitionTable=self.piano.partitionVizualizer.partitionButtons[#self.piano.partitionVizualizer.partitionButtons]
           if #lastPartitionTable>1 then
             table.remove(lastPartitionTable,#lastPartitionTable)
           else
-            table.remove(self.piano.partitionButtons,#self.piano.partitionButtons)
+            table.remove(self.piano.partitionVizualizer.partitionButtons,#self.piano.partitionVizualizer.partitionButtons)
           end
         end
       end

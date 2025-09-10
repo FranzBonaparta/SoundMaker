@@ -125,7 +125,11 @@ function PartitionVizualizer:draw()
 end
 
 function PartitionVizualizer:mousepressed(mx, my, button)
-
+for _, line in ipairs(self.visibleLines) do
+    for _, btn in ipairs(line.line) do
+      btn:mousepressed(mx,my,button)
+    end
+  end
 end
 
 function PartitionVizualizer:update(dt)

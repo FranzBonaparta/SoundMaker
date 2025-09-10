@@ -2,6 +2,8 @@
 -- Made by Jojopov
 -- Licence : GNU GPL v3 - 2025
 -- https://www.gnu.org/licenses/gpl-3.0.html
+-- import:
+-- classic.lua from rxi - https://github.com/rxi/classic
 local SimpleMusicPlayer = require("engine.simpleMusicPlayer")
 local player = SimpleMusicPlayer()
 local UI = require("UI.ui")

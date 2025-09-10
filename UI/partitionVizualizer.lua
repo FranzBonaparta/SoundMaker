@@ -8,92 +8,85 @@ function PartitionVizualizer:new()
   self.visibleLines = {}
   self.partition = {}
   self.partitionButtons = { {} }
-  self.x = 0
-  self.y = 20
-  self.width = 600
-  self.height = 600
-  self.offset = 20
+
   self.scrollBar = ScrollBar()
-  self.scrollBar:setColors(255, 0, 0)
+  --self.scrollBar:setColors(255, 0, 0)
+
   self.hidden = true
   self.cursorState = "arrow"
   self.actualLine = 1
+  self.viewX = 50
+  self.viewY = 450
+  self.viewWidth = 1300
+  self.viewHeight = 300
+  self.maxVisibleLines = 4
+  self.partitionLength = 25
 end
 
 function PartitionVizualizer:updatePartition(value, duration)
-  --mainly, we reorganize partitionsButtons table before adding a new element
-  --each children table's size must be <=25
   table.insert(self.partition, { note = value.note, duration = duration })
-  local x, y = #self.partitionButtons >= 1 and #self.partitionButtons[#self.partitionButtons] or 0,
-      #self.partitionButtons
-  y = 500 + (50 * (y - 1))
   local newButton = nil
-  if x < 25 and x >= 1 then
-    newButton = NoteButton(x + 1, y, value.name, duration, value.note, #self.partition)
-    table.insert(self.partitionButtons[#self.partitionButtons], newButton)
-  elseif x >= 25 then
-    y = y + 50
+  local x = #self.partitionButtons[#self.partitionButtons]
+  local y = #self.partitionButtons
+  y = self.viewY + (50 * (y))
+
+  if x > self.partitionLength - 1 then
     table.insert(self.partitionButtons, {})
-    x = #self.partitionButtons[#self.partitionButtons]
-    newButton = NoteButton(x + 1, y, value.name, duration, value.note, #self.partition)
+    x = 0
+    y = y + 50
+    newButton = NoteButton(x, y, value.name, duration, value.note, #self.partition)
     table.insert(self.partitionButtons[#self.partitionButtons], newButton)
-    --here is the print limit for partition viewer!
-    if #self.partitionButtons % 4 >= 1 then
-      self.actualLine = self.actualLine + 1
-    end
+    
+  elseif x <= self.partitionLength - 1 then
+    newButton = NoteButton(x, y, value.name, duration, value.note, #self.partition)
+    table.insert(self.partitionButtons[#self.partitionButtons], newButton)
   else
     table.insert(self.partitionButtons, {})
-    newButton = NoteButton(x + 1, y, value.name, duration, value.note, #self.partition)
+    newButton = NoteButton(x, y, value.name, duration, value.note, #self.partition)
     table.insert(self.partitionButtons[#self.partitionButtons], newButton)
   end
-  local max = self.actualLine + 2
-  local min = math.max(1, self.actualLine - 2)
-  self:setVisibleLines(min, max)
-  if #self.partitionButtons > 4 then
-    self.hidden = false
-  end
-  print(#self.partitionButtons, #self.visibleLines, self.hidden)
+  self:refreshVisibleLines(0)
+  --print(self.actualLine)
 end
 
-function PartitionVizualizer:setVisibleLines(min, max)
-  self.visibleLines = {}
-  --insert noteButton
-  for l, line in ipairs(self.partitionButtons) do
-    if l >= min and l <= max then
-      table.insert(self.visibleLines, { index = l, line = self.partitionButtons[l] })
-    end
+function PartitionVizualizer:refreshVisibleLines(modif)
+  if self.partitionButtons[self.actualLine+ modif+self.maxVisibleLines] and self.partitionButtons[self.actualLine+modif] then
+    self.actualLine=math.max(1,self.actualLine+modif)
   end
-  --modify coord of each noteButton
-  for l, line in ipairs(self.visibleLines) do
-    for n, noteButton in ipairs(line.line) do
-      noteButton:setCoords(n + 1, 500 + (50 * (l - 1)))
+    
+    self.visibleLines = {}
+    for index, btn in ipairs(self.partitionButtons) do
+      if index>=1 and index>= self.actualLine and index<= self.actualLine+self.maxVisibleLines then
+        table.insert(self.visibleLines, { index = index, line = self.partitionButtons[index] })
+      end
     end
+    
+    for l, line in ipairs(self.visibleLines) do
+      for n, noteButton in ipairs(line.line) do
+        noteButton:setCoords(n, self.viewY + (50 * l))
+      end
+    end
+    if #self.partitionButtons> self.maxVisibleLines then
+    self.hidden=false
+    self:setRatio()
   end
-  self:setRatio()
 end
 
 function PartitionVizualizer:setRatio()
-  local totalLines = #self.partitionButtons
-  local visibleLinesCount = #self.visibleLines
-  if #self.visibleLines > 0 and #self.partitionButtons > #self.visibleLines then
-    local firstLineIndex = self.visibleLines[1].index
+    local totalLines = #self.partitionButtons
+    local visibleLinesCount = #self.visibleLines
+    if #self.visibleLines > 0 and #self.partitionButtons > #self.visibleLines then
+        local firstLineIndex = self.visibleLines[1].index
 
-    local scrollRatio = firstLineIndex / totalLines
-    local scrollBarHeight = (visibleLinesCount / totalLines) * 200
-    local scrollBarY = scrollRatio * 200
-    self.scrollBar:setRatio(scrollRatio, scrollBarHeight, scrollBarY)
-  end
+        local scrollRatio = firstLineIndex / totalLines
+        local scrollBarHeight = (visibleLinesCount / totalLines) * self.viewHeight
+        local scrollBarY = scrollRatio * self.viewHeight
+        self.scrollBar:setRatio(scrollRatio, scrollBarHeight, scrollBarY)
+    end
 end
 
 function PartitionVizualizer:highlightNoteButton(currentIndex)
-  for _, line in ipairs(self.visibleLines) do
-    for _, btn in ipairs(line.line) do
-      if btn.index == currentIndex then
-        btn:highlight(currentIndex)
-        return
-      end
-    end
-  end
+
 end
 
 function PartitionVizualizer:playPartition(simpleMusicPlayer, instrument)
@@ -108,26 +101,31 @@ function PartitionVizualizer:playPartition(simpleMusicPlayer, instrument)
   end)
 end
 
-function PartitionVizualizer:draw()
-  love.graphics.setColor(1, 1, 1)
+function PartitionVizualizer:wheelmoved(mx, my)
+  if my<0 then
+    self:refreshVisibleLines(1)
+    self:setRatio()
+  elseif my>0 then
+    self:refreshVisibleLines(-1)
+    self:setRatio()
+  end
+end
 
+function PartitionVizualizer:draw()
   for _, line in ipairs(self.visibleLines) do
     for _, btn in ipairs(line.line) do
       btn:draw()
     end
   end
-  --love.graphics.setColor(1, 1, 1)
   if not self.hidden then
-    self.scrollBar:draw(800, 600, 20, 500)
+    love.graphics.setColor(1,1,1)
+    love.graphics.rectangle("fill",self.viewWidth+40,500,self.scrollBar.barWidth,300)
+    self.scrollBar:draw(self.viewX,self.viewY,self.viewWidth)
   end
 end
 
 function PartitionVizualizer:mousepressed(mx, my, button)
-  for _, table in ipairs(self.partitionButtons) do
-    for _, btn in ipairs(table) do
-      btn:mousepressed(mx, my, button)
-    end
-  end
+
 end
 
 function PartitionVizualizer:update(dt)

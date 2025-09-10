@@ -114,7 +114,9 @@ function PianoViewer:mousepressed(mx, my, button, instrument)
   end
   self.partitionVizualizer:mousepressed(mx, my, button)
 end
-
+function PianoViewer:wheelmoved(mx,my)
+  self.partitionVizualizer:wheelmoved(mx,my)
+end
 function PianoViewer:mousereleased(mx, my, button)
   for _, value in ipairs(self.blackTouches) do
     value:mousereleased(mx, my, button)

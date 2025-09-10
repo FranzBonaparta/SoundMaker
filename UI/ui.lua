@@ -166,6 +166,7 @@ end
 function UI:wheelmoved(mx, my)
   self.partitionExplorer:wheelmoved(mx, my)
   self.instrumentExplorer:wheelmoved(mx,my)
+  self.piano:wheelmoved(mx,my)
 end
 
 return UI

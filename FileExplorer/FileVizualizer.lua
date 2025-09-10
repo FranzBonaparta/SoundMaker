@@ -108,7 +108,8 @@ function FileVizualizer:draw()
         end
     end
     if #self.lines > #self.visibleLines then
-        self.scrollBar:draw(self.x, self.y, self.width, self.height)
+        --self.scrollBar:setCoords(self.x, self.y, self.width)
+        self.scrollBar:draw(self.x, self.y-75, self.width)
     end
 end
 

@@ -5,6 +5,8 @@ local HarmonicEditor = require("UI.harmonicEditor")
 local Button = require("UI.button")
 local InstrumentPanel = require("Managers.instrumentPanel")
 local PartitionManager = require("Managers.partitionManager")
+local writeMIDI = require("MusicWriters.midiWriter")
+local WavWriter = require("MusicWriters.wavWriter")
 --local FrequencySlider=require("UI.frequencySlider")
 function UI:new(player)
   self.piano = PianoViewer(50, 100)
@@ -72,7 +74,7 @@ end
 
 function UI:update(dt)
   self.partitionExplorer:update(dt, self.piano)
-  self.instrumentExplorer:update(dt,self.harmonicEditor)
+  self.instrumentExplorer:update(dt, self.harmonicEditor)
   if self.state == "piano" and self.partitionExplorer.canPlay then
     --highlight notes played on reading partition -> see simpleMusicPlayer:update
     self.piano:update(dt)
@@ -111,7 +113,7 @@ function UI:mousepressed(mx, my, button)
         end
       end
     else
-      self.instrumentExplorer:mousepressed(mx,my,button,self.harmonicEditor,self.state)
+      self.instrumentExplorer:mousepressed(mx, my, button, self.harmonicEditor, self.state)
       self.harmonicEditor:mousepressed(mx, my, button)
     end
     self.stateButton:mousepressed(mx, my, button)
@@ -128,9 +130,9 @@ function UI:keypressed(key, player)
   local bool = self.partitionExplorer:keypressed(key)
   local bool2 = self.instrumentExplorer:keypressed(key)
   --test if no one explorer is opened
-  if not bool and not bool2  
-  and self.partitionExplorer.canPlay 
-  and self.instrumentExplorer.canPlay then
+  if not bool and not bool2
+      and self.partitionExplorer.canPlay
+      and self.instrumentExplorer.canPlay then
     if self.state == "piano" then
       player:keypressed(key)
       if key == "tab" and #self.piano.partitionVizualizer.partition > 0 then
@@ -138,24 +140,43 @@ function UI:keypressed(key, player)
       end
       if key == "delete" then
         self.piano.partitionVizualizer.partition = {}
-        self.piano.partitionVizualizer.partitionButtons={{}}
-        self.piano.partitionVizualizer.visibleLines={}
+        self.piano.partitionVizualizer.partitionButtons = { {} }
+        self.piano.partitionVizualizer.visibleLines = {}
       end
       if key == "backspace" then
         if #self.piano.partitionVizualizer.partition >= 1 then
           table.remove(self.piano.partitionVizualizer.partition, #self.piano.partitionVizualizer.partition)
-          local lastPartitionTable=self.piano.partitionVizualizer.partitionButtons[#self.piano.partitionVizualizer.partitionButtons]
+          local lastPartitionTable = self.piano.partitionVizualizer.partitionButtons
+          [#self.piano.partitionVizualizer.partitionButtons]
 
-          if #lastPartitionTable>1 then
-
-            table.remove(lastPartitionTable,#lastPartitionTable)
+          if #lastPartitionTable > 1 then
+            table.remove(lastPartitionTable, #lastPartitionTable)
           else
-
-            table.remove(self.piano.partitionVizualizer.partitionButtons,#self.piano.partitionVizualizer.partitionButtons)
-            table.remove(self.piano.partitionVizualizer.visibleLines,#self.piano.partitionVizualizer.visibleLines)
+            table.remove(self.piano.partitionVizualizer.partitionButtons,
+              #self.piano.partitionVizualizer.partitionButtons)
+            table.remove(self.piano.partitionVizualizer.visibleLines, #self.piano.partitionVizualizer.visibleLines)
           end
-
         end
+      end
+      if key == "m" then
+        local partition = {}
+        if self.piano.partitionVizualizer.partition then
+          for _, note in ipairs(self.piano.partitionVizualizer.partition) do
+            table.insert(partition, { note = note.note, duration = note.duration })
+          end
+        end
+        local name = self.piano.partitionVizualizer.name
+        name = #name > 0 and name or "newMusic"
+        writeMIDI.export_midi_from_melody(partition, { bpm = 120, ppqn = 480, program = 0, filename = name .. ".mid" })
+        print("partition recorded at " .. name .. ".mid !")
+      end
+      if key=="w"then
+        local name = self.piano.partitionVizualizer.name
+        print(name)
+        name = #name > 0 and name or "newMusic"
+        local samples=self.piano.partitionVizualizer:getSamples(self.harmonicEditor)
+        WavWriter.writePCM16Mono(name..".wav",samples)
+        print("partition recorded at " .. name .. ".wav !")
       end
     elseif self.state == "harmonic" then
       self.harmonicEditor:keypressed(key)
@@ -165,8 +186,8 @@ end
 
 function UI:wheelmoved(mx, my)
   self.partitionExplorer:wheelmoved(mx, my)
-  self.instrumentExplorer:wheelmoved(mx,my)
-  self.piano:wheelmoved(mx,my)
+  self.instrumentExplorer:wheelmoved(mx, my)
+  self.piano:wheelmoved(mx, my)
 end
 
 return UI

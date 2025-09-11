@@ -111,6 +111,18 @@ function SoundMaker:generatePersonnalizedNote(frequency,duration, amplitude,type
     src:setLooping(false)
     return src
 end
+function SoundMaker:generatePersonnalizedSamples(frequency,duration, amplitude,type, attack, decay, harmonicFactors, harmonicAmplitudes)
+    amplitude = amplitude or 0.3
+    local soundData = love.sound.newSoundData(self.sampleRate * duration, self.sampleRate, 16, 1)
+    local samples={}
+    for i = 0, soundData:getSampleCount() - 1 do
+        local time = i / self.sampleRate
+        local value = self:getPersonnalizedHarmonic(frequency, amplitude, time,type, attack, decay, harmonicFactors, harmonicAmplitudes)
+        table.insert(samples,value)
+    end
+
+    return samples
+end
 -- Onde carrée
 function SoundMaker:createSquareWave(frequency, duration, amplitude)
     amplitude = amplitude or 0.3

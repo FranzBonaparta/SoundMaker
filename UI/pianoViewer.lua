@@ -6,7 +6,7 @@ local Notes = require("assets.notes")
 local whiteNotes = Notes.whiteNotesName
 local blackNotes = Notes.blackNotesName
 local PartitionVizualizer = require("UI.partitionVizualizer")
-
+local Button=require("UI.button")
 function PianoViewer:new(x, y)
   self.x = x
   self.y = y
@@ -14,6 +14,11 @@ function PianoViewer:new(x, y)
   self.blackTouches = {}
   self.partitionVizualizer = PartitionVizualizer()
   self.restTouche = {}
+  self.showSliders=true --default false
+  --[[self.fqButton=Button(50,200,20,100,"Fq\n\n ->",function()self.showSliders=not self.showSliders end)
+  self.fqButton:setImmediate()
+  self.fqButton:setBackgroundColor(0,0,255)
+  self.fqButton:setTextColor(255,0,0)]]
   for w = 1, 52 do
     local whiteKey = PianoKey("white", x, y, width, whiteHeight)
     whiteKey:setName(whiteNotes[w])
@@ -46,23 +51,23 @@ end
 --draw white touches
 local function drawWhiteTouches(self)
   for _, touch in ipairs(self.whiteTouches) do
-    touch:draw()
+    touch:draw(self.showSliders)
   end
 end
 --draw black touches
 local function drawBlackTouches(self)
   for _, b in ipairs(self.blackTouches) do
-    b:draw()
+    b:draw(self.showSliders)
   end
 end
-
 function PianoViewer:draw()
   drawWhiteTouches(self)
   drawBlackTouches(self)
-  self.restTouche:draw()
+  self.restTouche:draw(self.showSliders)
+  --self.fqButton:draw()
   love.graphics.setColor(1, 1, 1)
   --love.graphics.printf(self.text, self.x, 500, 1200)
-  self.partitionVizualizer:draw()
+  self.partitionVizualizer:draw(self.showSliders)
 end
 
 function PianoViewer:highlightNote(note, duration)
@@ -86,6 +91,7 @@ end
 
 function PianoViewer:mousepressed(mx, my, button, instrument)
   local duration = 0
+  --self.fqButton:mousepressed(mx,my,button)
   if button == 1 then duration = 0.2 elseif button == 2 then duration = 0.1 elseif button == 3 then duration = 0.4 end
   if button == 1 or button == 2 or button == 3 then
     for _, value in ipairs(self.blackTouches) do

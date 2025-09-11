@@ -84,7 +84,7 @@ function PianoKey:highlight(duration)
   self.touchTimer = duration or 0.25
 end
 
-function PianoKey:draw()
+function PianoKey:draw(showSlider)
   local color = self.type == "white" and { 210 / 255, 210 / 255, 210 / 255 } or { 0.1, 0.1, 0.1 }
   --draw key
   love.graphics.setColor(color)
@@ -108,7 +108,7 @@ function PianoKey:draw()
     love.graphics.setColor(1, 1, 1)
     love.graphics.print(self.name, self.x + 1, self.y - 20)
   end
-  if self.frequencySlider then
+  if self.frequencySlider and showSlider then
     self.frequencySlider:draw()
   end
 end

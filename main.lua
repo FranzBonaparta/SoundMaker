@@ -51,7 +51,7 @@ end
 -- Function called at each touch
 function love.keypressed(key)
     -- Example: exit the game with Escape
-    if key == "escape" then
+    if key == "escape" and ui.state=="piano" then
         love.event.quit()
     end
     ui:keypressed(key, player)

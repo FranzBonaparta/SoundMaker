@@ -124,7 +124,7 @@ function UI:mousepressed(mx, my, button)
             instr:mousepressed(mx, my, button)
           elseif button == 2 and instr:isHovered(mx, my) then
             self:initializeEditor(instr)
-            self.exportButton.onClick()
+            self.state="harmonic"
           end
         end
       else
@@ -188,6 +188,9 @@ function UI:keypressed(key, player)
       end
     elseif self.state == "harmonic" then
       self.harmonicEditor:keypressed(key)
+      if key=="escape" then
+        self.state="piano"
+      end
     end
   end
 end

@@ -227,6 +227,7 @@ function HarmonicEditor:keypressed(key)
   for _, field in ipairs(self.amplitudesFields) do
     field:keypressed(key)
   end  
+
 end
 
 return HarmonicEditor

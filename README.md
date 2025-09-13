@@ -1,85 +1,94 @@
 # 🎹 SoundMaker
 
-Created by **Jojopov**
+Created by **Jojopov**  
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Built with Love2D](https://img.shields.io/badge/Built%20with-Love2D-ff69b4)](https://love2d.org/)
 
 2025
+
+**SoundMaker** is a small interactive synthesizer built with Love2D.  
+Play on a virtual keyboard, tweak sound parameters, and record/replay your own melodies.  
+Now with **WAV export** and **MIDI export (beta)**.
 
 ## 📷 Screenshots
 
 <p align="center">
   <img src="./pictures/screenshot3.png" alt="Main interface" width="400"/>
   <img src="./pictures/screenshot4.png" alt="Edit instrument" width="400"/>
-    <img src="./pictures/screenshot5.png" alt="Save partition" width="400"/>
+  <img src="./pictures/screenshot5.png" alt="Save partition" width="400"/>
   <img src="./pictures/screenshot6.png" alt="Load partition" width="400"/>
-
 </p>
 
-**SoundMaker** is a small interactive synthesizer developed in Love2D.
-It allows you to play notes on a virtual keyboard, modify their sound parameters, and even record/replay melodies.
+---
 
-## 📦 Last updates
+## 📦 Latest updates
 
-- Implementation of note's button on partition which allowed you to edit eaxh note's duration.
-- Load and Save function for instrument and partition.
+- 💾 **Export to WAV** — Save your current melody as an uncompressed `.wav` file (shortcut: **W**).
+- 🎼 **Export to MIDI (beta)** — Save your melody as a Standard MIDI File `.mid` (shortcut: **M**).  
+  _Note:_ uses default program/channel/velocity/tempo for now; a proper instrument/track picker is planned.
+- 📜 **Partition viewer overhaul** — Correct scrollbar + clear “visible lines” window for long scores.
+- 🧼 **General polish & fixes** — Small UI tweaks and stability improvements during record/playback.
+
+_(Previous)_  
+
+- 📝 **Per-note editing** — Buttons on each note to adjust its duration.  
+- 💾 **Save/Load** — Instruments and partitions can be saved and reloaded.
+
+---
 
 ## ✨ Features
 
-- 🎹 Virtual keyboard (white & black keys, rest key).
+- 🎹 Virtual keyboard (white & black keys, plus a rest key)
+- 🎚️ Adjustable note frequencies via sliders
+- 🔊 Waveform selection (sine, square, triangle, etc.)
+- 📝 Recordable score → replay your melodies and edit each note’s duration
+- 🎶 Visual highlighting of played notes
+- 💾 Export: **WAV** (stable) & **MIDI** (beta)
 
-- 🎚️ Adjustment sliders to change note frequencies.
+---
 
-- 🔊 Waveform selection (square, sine, etc.).
+## ⌨️ Key bindings
 
-- 📝 Recordable score → replay your melodies and edit all note's played duration.
+### 🎹 Piano controls
 
-- 🎶 Visual highlighting of played notes.
+- **Left Click** — Play a black note  
+- **Middle Click** — Play a white note  
+- **Right Click** — Play a quaver (short note)
 
-## Keys
+### 📝 Partition controls
 
-🎹 Piano Controls:
+- **Tab** — Play the current partition  
+- **Backspace** — Remove the last note  
+- **Delete** — Clear the entire partition  
+- **Right Click** — On a note’s **+ / −** buttons to edit that note’s duration
 
-- **Left Click** – Play a black note
-- **Middle Click** – Play a white note
-- **Right Click** – Play a quaver (shorter note)
+### 📤 Export
 
-📝 Partition Controls:
+- **W** — Export current melody to **WAV**  
+- **M** — Export current melody to **MIDI** _(beta)_
 
-- **Tab** – Play the current partition
-- **Delete** – Clear the entire partition
-- **Backspace** – Remove the last note from the partition
-- **Right Click** - On each note ("+" or "-" button) from the partition to edit the note's duration
+### 🎧 Programmatic sounds (demo)
 
-🎧 Programmatic Sounds:
+- **Space**, **A**, **Z**, **E**, **R**, **T**, **Y**, **1**, **2**, **3** — Trigger custom/synth sounds
 
-- **space**, **a**, **z**, **e**, **r**, **t**, **y**, **1**, **2**, **3** – Trigger custom or synthesized sounds
+---
 
-## 🛠 Materials required
+## 🛠 Requirements
 
 - Any code editor
-- Linux or **Windows Vista and later**
-- Love2D (for development or running the .love file)
+- **Windows Vista and later** or **Linux**
+- **Love2D** (for development or running the `.love` on Linux)
 
-### 🚀 Installation
+> 📥 Pre-built Windows zips are available in **Releases**.  
+> Linux users can run the project directly with Love2D.
 
-- Install Love2D.
+---
 
-- Clone the repository:
+## 🚀 Run / Install
 
-<code> git clone https://github.com/FranzBonaparta/SoundMaker.git
+### Linux (development or run `.love`)
+```bash
+# Ensure Love2D 11.5 is installed
+git clone https://github.com/FranzBonaparta/SoundMaker.git
 cd SoundMaker
-love .</code>
-
-- One zip file, for windows is available
-
-- 🎉 Play some music!
-
-### 📦 Build & Deployment (Linux / Windows / Mac)
-
-Make sure you have [Love2D 11.5](https://love2d.org/) installed.
-
-If you're on Linux
-<code>love .</code>
-For Windows, download the official zipped 32 or 64 bit executable (not the installer) from https://www.love2d.org/ and copy it to a new folder tools/love-11.5-win32/
- run the build.sh script or follow the commands listed there, then run the .exe!
+love .

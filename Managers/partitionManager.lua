@@ -40,7 +40,11 @@ function PartitionManager:mousepressed(mx, my, button, piano, state)
         --[[table.insert(piano.partition, { note = value.note, duration = value.duration })
         table.insert(piano.partitionButtons, NoteButton(i,tostring(value.name),value.duration,value.note,i))]]
       end
-      piano.partitionVizualizer.name=name
+      --change the returned name; extract mention of (copy),path and extension
+      local copyPos=string.find(name,"[%(]")
+      copyPos=copyPos and copyPos-2 or #name-4
+      piano.partitionVizualizer.name=string.sub(name,12,copyPos)
+      print("loaded "..piano.partitionVizualizer.name,copyPos)
       self.fileVizualizer.hidden = true
       return self.fileVizualizer.hidden
     end

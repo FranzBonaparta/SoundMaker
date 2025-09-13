@@ -7,6 +7,7 @@ local InstrumentPanel = require("Managers.instrumentPanel")
 local PartitionManager = require("Managers.partitionManager")
 local writeMIDI = require("MusicWriters.midiWriter")
 local WavWriter = require("MusicWriters.wavWriter")
+local OutputName = require("libs.inputName")
 --local FrequencySlider=require("UI.frequencySlider")
 function UI:new(player)
   self.piano = PianoViewer(50, 100)
@@ -16,24 +17,28 @@ function UI:new(player)
   self.instrumentIndex = 0
   self:setInstrumentsButtons()
   self.state = "piano"
-  self.stateButton = nil
-  self:initializeStateButton()
+  self.exportButton = nil
+  self:initializeExportButton()
   self.partitionExplorer = PartitionManager()
   self.instrumentExplorer = InstrumentPanel()
+  self.modalBox = OutputName(300, 300, 600, 200, 0)
 end
 
-function UI:initializeStateButton()
-  self.stateButton = Button(1400, 700, 70, 40, "edit Harmonic")
-  self.stateButton:setImmediate()
-  self.stateButton:setOnClick(function()
-    self.state = self.state == "piano" and "harmonic" or "piano"
-    if self.state == "piano" then
-      self.stateButton:setText("edit Harmonic")
-    else
-      self.stateButton:setText("go to piano")
-    end
+function UI:initializeExportButton()
+  self.exportButton = Button(1400, 700, 70, 40, "export to .wav")
+  self.exportButton:setImmediate()
+  self.exportButton:setOnClick(function()
+    local name = self.piano.partitionVizualizer.name
+    name = #name > 0 and name or "newMusic"
+    print(name)
+    local samples = self.piano.partitionVizualizer:getSamples(self.harmonicEditor)
+    WavWriter.writePCM16Mono(name .. ".wav", samples)
+    local path = "musics/" .. name .. ".wav"
+    local source = love.filesystem.getRealDirectory(path)
+    self.modalBox:setText("music recorded at: \n" .. source .. "\n/" .. path)
+    self.modalBox:show()
   end)
-  self.stateButton:setBackgroundColor(125, 125, 125)
+  self.exportButton:setBackgroundColor(125, 125, 125)
 end
 
 function UI:setInstrumentsButtons()
@@ -90,33 +95,44 @@ function UI:draw()
     for _, instr in ipairs(self.instruments) do
       instr:draw()
     end
+    if #self.piano.partitionVizualizer.partition > 0 then
+      self.exportButton:draw()
+    end
   else
     self.harmonicEditor:draw(self.instrumentIndex)
   end
-  self.stateButton:draw()
+
   self.partitionExplorer:draw()
   self.instrumentExplorer:draw()
+  if self.modalBox.visible then
+    self.modalBox:draw()
+  end
 end
 
 function UI:mousepressed(mx, my, button)
-  local bool = self.partitionExplorer:mousepressed(mx, my, button, self.piano, self.state)
-  if bool and self.partitionExplorer.canPlay then
-    if self.state == "piano" then
-      local instrument = self.harmonicEditor
-      self.piano:mousepressed(mx, my, button, instrument)
-      for _, instr in ipairs(self.instruments) do
-        if button == 1 and instr:isHovered(mx, my) then
-          instr:mousepressed(mx, my, button)
-        elseif button == 2 and instr:isHovered(mx, my) then
-          self:initializeEditor(instr)
-          self.stateButton.onClick()
+  if self.modalBox.visible then
+    self.modalBox:mousepressed(mx, my, button)
+  else
+    local bool = self.partitionExplorer:mousepressed(mx, my, button, self.piano, self.state)
+
+    if bool and self.partitionExplorer.canPlay then
+      if self.state == "piano" then
+        local instrument = self.harmonicEditor
+        self.piano:mousepressed(mx, my, button, instrument)
+        for _, instr in ipairs(self.instruments) do
+          if button == 1 and instr:isHovered(mx, my) then
+            instr:mousepressed(mx, my, button)
+          elseif button == 2 and instr:isHovered(mx, my) then
+            self:initializeEditor(instr)
+            self.exportButton.onClick()
+          end
         end
+      else
+        self.instrumentExplorer:mousepressed(mx, my, button, self.harmonicEditor, self.state)
+        self.harmonicEditor:mousepressed(mx, my, button)
       end
-    else
-      self.instrumentExplorer:mousepressed(mx, my, button, self.harmonicEditor, self.state)
-      self.harmonicEditor:mousepressed(mx, my, button)
+      self.exportButton:mousepressed(mx, my, button)
     end
-    self.stateButton:mousepressed(mx, my, button)
   end
 end
 
@@ -147,7 +163,7 @@ function UI:keypressed(key, player)
         if #self.piano.partitionVizualizer.partition >= 1 then
           table.remove(self.piano.partitionVizualizer.partition, #self.piano.partitionVizualizer.partition)
           local lastPartitionTable = self.piano.partitionVizualizer.partitionButtons
-          [#self.piano.partitionVizualizer.partitionButtons]
+              [#self.piano.partitionVizualizer.partitionButtons]
 
           if #lastPartitionTable > 1 then
             table.remove(lastPartitionTable, #lastPartitionTable)
@@ -169,14 +185,6 @@ function UI:keypressed(key, player)
         name = #name > 0 and name or "newMusic"
         writeMIDI.export_midi_from_melody(partition, { bpm = 120, ppqn = 480, program = 0, filename = name .. ".mid" })
         print("partition recorded at " .. name .. ".mid !")
-      end
-      if key=="w"then
-        local name = self.piano.partitionVizualizer.name
-        print(name)
-        name = #name > 0 and name or "newMusic"
-        local samples=self.piano.partitionVizualizer:getSamples(self.harmonicEditor)
-        WavWriter.writePCM16Mono(name..".wav",samples)
-        print("partition recorded at " .. name .. ".wav !")
       end
     elseif self.state == "harmonic" then
       self.harmonicEditor:keypressed(key)
